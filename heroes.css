@@ -1,0 +1,554 @@
+/* ============================================================================
+   Hero store-builder visuals — Figma J6H0sdLAoUE045mWbC8YuD
+   Section 74:42950 "Motion Direction 1 ( New Visuals )"
+     Option 1  74:43445  hero-store-builder-fashion  (PITCH, beauty)
+     Option 2  74:43447  hero-store-builder-health   (VESNA, fashion)
+     Option 3  74:43446  hero-store-builder-food     (B., skincare)
+
+   Each variant is 840x630 and shares one kit (grid, storefront, slider,
+   editor card, swatch pill, product card) with a per-variant cutout.
+   Geometry is Figma-verbatim from get_metadata except where noted "measured",
+   which means recovered from the Figma render because the export was wrong.
+   ========================================================================= */
+
+@font-face {
+  font-family: "Radio Canada Big";                 /* Option 2 product prices */
+  src: url("assets/fonts/RadioCanadaBig-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Liter";                            /* Option 1 price */
+  src: url("assets/fonts/Liter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.hero-stage {
+  --s: 1;                                  /* display scale, 1 = design size */
+  position: relative;
+  width:  calc(840px * var(--s));
+  height: calc(630px * var(--s));
+  flex: none;
+}
+
+.hero-viz {
+  position: absolute;
+  top: 0; left: 0;
+  width: 840px;
+  height: 630px;
+  background: var(--color-theme-surface-1, #f2f2f0);
+  overflow: hidden;                        /* the Figma hero frame clips */
+  transform: scale(var(--s));
+  transform-origin: 0 0;
+}
+
+/* Every layer is absolutely placed; replaced elements always carry an explicit
+   width AND height so a fixed-size leaf can never size itself (CSS 2.1 10.3.8). */
+.hero-viz > *,
+.hero-viz .hv-editor > *,
+.hero-viz .hv-slider > * { position: absolute; }
+.hero-viz img { display: block; }
+
+/* ── Grid ──────────────────────────────────────────────────────────────────
+   The export writes the stroke bleed one-sided (inset-[-0.21%_0_0_0]). The
+   render settles it: horizontals land on pixel rows 74/154/.../554 and
+   verticals on columns 60/140/.../780, so a line at SVG 0.5 must sit at *.5
+   -> grid-h top 74, grid-v left 60. Both stay crisp. */
+.hv-grid-h { left: 0;    top: 74px; width: 840px;     height: 481.001px; }
+.hv-grid-v { left: 60px; top: 0;    width: 721.001px; height: 630px;     }
+
+/* ── Storefront screenshot ───────────────────────────────────────────────── */
+.hv-storefront {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px 1px rgba(0, 0, 0, .25);
+  left:   var(--sf-x);
+  top:    var(--sf-y);
+  width:  var(--sf-w);
+  height: var(--sf-h);
+}
+.hv-storefront > img {
+  position: absolute;
+  left:   var(--sf-ix);
+  top:    var(--sf-iy);
+  width:  var(--sf-iw);
+  height: var(--sf-ih);
+}
+
+/* ── Live storefront ───────────────────────────────────────────────────────
+   The flat storefront.jpg above is the Figma render of the site, scaled to fit
+   the panel width. .sf replaces it with the site itself: the design's own
+   frame (404x510, 1440x3544, 404x528) laid out in NATIVE Figma coordinates and
+   dropped onto the panel by ONE scale factor, --sf-k = 563 / --sf-nw. So every
+   number in the markup is the number Figma reports, and "the sizes are all
+   different" reduces to three values of --sf-k.
+
+   No page scrolls, so only what clears the fold is built: --sf-h / --sf-k of
+   native height (390.4 / 1391.4 / 390.2 px). .hv-storefront already clips.
+
+   options.html keeps the raster and stays the Figma-verbatim reference that
+   measure_heroes.py diffs against the exported renders — which is why the rule
+   above is `> img`, reachable only by that one direct child. */
+.hv-storefront > .sf {
+  position: absolute;
+  left: 0;
+  top:  0;
+  width:  var(--sf-nw);
+  height: var(--sf-nh);
+  background: var(--sf-bg);
+  transform: scale(var(--sf-k));
+  transform-origin: 0 0;
+}
+/* Every leaf carries its own left/top/width/height inline, straight from Figma. */
+.sf * { position: absolute; margin: 0; }
+.sf img { display: block; }
+.sf-cover { object-fit: cover; }
+.sf-clip  { overflow: hidden; }
+.sf-t { white-space: nowrap; font-weight: 400; }
+.sf-t--liter { font-family: "Liter", Georgia, serif; }
+.sf-t--inter { font-family: "Shopify Inter", system-ui, sans-serif; }
+.sf-t--rcb {
+  font-family: "Radio Canada Big", system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.24;
+  letter-spacing: -0.64px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+/* ── Slider pill ──────────────────────────────────────────────────────────── */
+.hv-slider {
+  left: 24px; top: 272.235px;
+  width: 190.163px; height: 44.63px;
+  background: #fff;
+  border-radius: 17.464px;
+  overflow: hidden;
+  box-shadow: 0 131px 37px rgba(0, 0, 0, 0), 0 84px 33px rgba(0, 0, 0, 0),
+              0 47px 28px rgba(0, 0, 0, .02), 0 21px 21px rgba(0, 0, 0, .03),
+              0 5px 12px rgba(0, 0, 0, .03);
+}
+/* measured: both bars are 2.62px tall on one centre line at y 294.20 (hero
+   space) = 21.965 inside the pill. The export's `border: 1.746px dashed` on a
+   0.873px-tall box cannot render this, so the remainder is a gradient whose
+   dash 3.504 / pitch 6.896 reproduces all five rendered dashes to +/-0.06px. */
+.hv-slider__solid {
+  left: 17.314px; top: 20.654px;
+  width: 113.566px; height: 2.62px;
+  background: #303030;                     /* --p-color-bg-fill-brand */
+  border-radius: 1.31px;
+}
+.hv-slider__dashes {
+  left: 142.607px; top: 20.654px;
+  width: 30.712px; height: 2.624px;
+  background: repeating-linear-gradient(90deg,
+    #8a8a8a 0 3.504px, transparent 3.504px 6.896px);   /* --color/input/border */
+}
+.hv-slider__thumb {
+  left: 123.895px; top: 16.18px;           /* centre (154.88, 295.40) in hero space */
+  width: 13.971px; height: 13.971px;
+  background: #303030;
+  border-radius: 50%;
+}
+
+/* ── Editor card ──────────────────────────────────────────────────────────── */
+/* The shadow is on the Figma GROUP (74:43096), which get_design_context flattens
+   to `display: contents` -- so the export drops it entirely. Recovered from the
+   render: it reaches 137px below the card, which no single-layer shadow can do
+   (steep at the edge, long tail). Fitted over this design's shadow family to an
+   RMS of 0.0018 against a 0.139 peak. */
+.hv-editor {
+  left: 52.431px; top: 343.14px;
+  width: 256.138px; height: 103.675px;
+  background: #fff;
+  border-radius: 10.754px;
+  box-shadow: 0 131px 37px rgba(0, 0, 0, .01), 0 84px 33px rgba(0, 0, 0, .015),
+              0 47px 28px rgba(0, 0, 0, .04), 0 21px 21px rgba(0, 0, 0, .03),
+              0 5px 12px rgba(0, 0, 0, .06);
+}
+.hv-editor__head {
+  left: 0; top: 0;
+  width: 256.138px; height: 43.993px;
+  background: #f7f7f7;
+  mix-blend-mode: multiply;
+  border-radius: 10.754px 10.754px 0 0;
+}
+/* Toolbar icons: each leaf is placed at box origin + its Figma inset, so the
+   19.553px hit boxes need no wrapper element. */
+.hv-ic--magic     { left:  21.437px; top: 18.503px; width: 12.834px; height: 13.005px; }
+.hv-ic--text      { left:  50.004px; top: 17.840px; width: 11.440px; height: 12.960px; }
+.hv-ic--chevron   { left:  80.554px; top: 23.070px; width:  7.430px; height:  4.302px; }
+.hv-ic--bold      { left: 107.052px; top: 17.593px; width:  9.776px; height: 13.198px; }
+.hv-ic--italic    { left: 135.888px; top: 18.085px; width:  9.776px; height: 12.709px; }
+.hv-ic--link      { left: 163.340px; top: 17.673px; width: 13.549px; height: 13.555px; }
+.hv-ic--bulleted  { left: 192.590px; top: 18.573px; width: 13.687px; height: 11.732px; }
+.hv-ic--numbered  { left: 221.679px; top: 16.743px; width: 13.931px; height: 15.154px; }
+
+.hv-bar {
+  left: 20.530px;
+  height: 4.888px;
+  background: var(--color-shade-5, #f2f2f2);
+  border-radius: 75.745px;
+}
+.hv-bar--1 { top: 60.615px; width: 206.279px; }
+.hv-bar--2 { top: 70.391px; width: 171.085px; }
+.hv-bar--3 { top: 80.169px; width: 188.682px; }
+
+/* ── Swatch pill ──────────────────────────────────────────────────────────── */
+.hv-swatch {
+  left: 630px; top: 447px;
+  width: 176px; height: 48px;
+  background: #fff;
+  border-radius: 10.874px;
+  padding: 12px;
+  display: flex;
+  gap: 8px;
+  box-shadow: 0 28px 4px rgba(0, 0, 0, 0), 0 18px 3.5px rgba(0, 0, 0, .01),
+              0 10px 3px rgba(0, 0, 0, .03), 0 5px 2.5px rgba(0, 0, 0, .04),
+              0 1px 1px rgba(0, 0, 0, .05);
+  box-sizing: border-box;
+}
+.hv-swatch i {
+  width: 24px; height: 24px;
+  border-radius: 5px;
+  flex: none;
+}
+
+/* ── Product card ─────────────────────────────────────────────────────────── */
+.hv-card {
+  left: var(--card-x); top: 138px;
+  width: 240px; height: 262px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;               /* puts shadow/amount/button at 116/135/193 */
+  gap: 10px;
+  box-shadow: 0 38px 5.5px rgba(0, 0, 0, 0), 0 24px 5px rgba(0, 0, 0, .01),
+              0 14px 4px rgba(0, 0, 0, .03), 0 6px 3px rgba(0, 0, 0, .05),
+              0 2px 1.5px rgba(0, 0, 0, .06);
+}
+.hv-card__shadow {
+  align-self: center;
+  width: var(--card-shadow-w);
+  height: 9px;
+  flex: none;
+}
+.hv-card__amount {
+  width: 200px; height: 48px;              /* Figma "inside" stroke: border-box */
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+}
+.hv-card__minus { width: 10px; height: 2px; background: #000; }
+.hv-card__qty {
+  font-family: "Shopify Inter", Inter, -apple-system, system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000;
+}
+.hv-card__plus {
+  width: 10px; height: 10px;
+  background:
+    linear-gradient(#000 0 0) no-repeat center / 10px 2px,
+    linear-gradient(#000 0 0) no-repeat center / 2px 10px;
+}
+.hv-card__btn {
+  width: 200px; height: 49px;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.hv-card__btn img { width: 20px; height: 21px; }
+
+/* ══ Option 1 — 74:43445, PITCH beauty ═══════════════════════════════════ */
+.hero-viz--opt1 {
+  --sf-x: 152px; --sf-y: 50px;  --sf-w: 563px; --sf-h: 544px;
+  --sf-ix: 0;    --sf-iy: -0.0544px; --sf-iw: 563px; --sf-ih: 1439.15px;
+  --sf-nw: 404px; --sf-nh: 510px; --sf-bg: #fffaf7;
+  --card-x: 570px;
+  --card-shadow-w: 112px;
+}
+/* The tube is rotated -165deg. get_metadata gives a rotated node's PRE-rotation
+   origin, not its visual bbox, so the box is placed at that origin with
+   transform-origin 0 0 — solved and confirmed to 0.6px against the render. */
+.hero-viz--opt1 .hv-cutout {
+  left: 745.4766px; top: 305.5635px;
+  width: 162.406px; height: 242.076px;
+  transform: rotate(-165deg);
+  transform-origin: 0 0;
+}
+
+/* ══ Option 2 — 74:43447, VESNA fashion ══════════════════════════════════ */
+.hero-viz--opt2 {
+  --sf-x: 120px; --sf-y: 54px;  --sf-w: 575px; --sf-h: 556px;
+  --sf-ix: -0.0575px; --sf-iy: 0; --sf-iw: 575.1725px; --sf-ih: 1416.577px;
+  --sf-nw: 1440px; --sf-nh: 3544px; --sf-bg: #ffffff;
+  --card-x: 566px;
+  --card-shadow-w: 178px;
+}
+.hero-viz--opt2 .hv-cutout {
+  left: 588px; top: 45px;
+  width: 196px; height: 293px;
+  object-fit: cover;
+}
+
+/* ══ Option 3 — 74:43446, B. skincare ════════════════════════════════════ */
+.hero-viz--opt3 {
+  --sf-x: 117px; --sf-y: 51px;  --sf-w: 563px; --sf-h: 544px;
+  --sf-ix: -0.056px; --sf-iy: 0; --sf-iw: 563.169px; --sf-ih: 735.978px;
+  --sf-nw: 404px; --sf-nh: 528px; --sf-bg: #e7e6e0;
+  --card-x: 566px;
+  --card-shadow-w: 118px;
+}
+/* products 74:43010 — seven painted layers. The SVG shadows/ellipses bleed
+   outside their Figma boxes; each is placed at box + resolved negative inset. */
+.hv-p1 { left: 594.002px; top: 238.801px; width: 129.041px; height: 28.710px; }
+.hv-p2 { left: 662.565px; top: 255.439px; width:  55.086px; height:  9.076px; }
+.hv-p3 { left: 708.570px; top: 247.655px; width:  74.504px; height: 13.586px; }
+.hv-p4 { left: 709.773px; top: 249.756px; width:  69.410px; height:  9.384px; }
+/* No object-fit: this fill is genuinely DISTORTED in Figma. The box scales x by
+   144.341/308 = 0.46864 and y by 190.823/1024 = 0.18635 independently, which
+   puts the source's 120x994 ink at 56.2x185.2 and lands it at x 712.8..768.6 --
+   exactly where the Figma render has it. contain/cover both miss by ~2.5x. */
+.hv-p5 {
+  left: 668.775px; top: 69px;
+  width: 144.341px; height: 190.823px;
+}
+.hv-p6 { left: 652.648px; top: 134.399px; width: 71.671px; height: 132.591px; overflow: hidden; }
+.hv-p6 img { position: absolute; left: 12.54px; top: 3.58px; width: 44.81px; height: 123.63px; }
+.hv-p7 { left: 598px; top: 182.777px; width: 66.295px; height: 68.087px; object-fit: cover; }
+
+/* ── Swatch colours (Figma fills, per variant) ────────────────────────────── */
+.hero-viz--opt1 .hv-swatch i:nth-child(1) { background: #ff4315; }
+.hero-viz--opt1 .hv-swatch i:nth-child(2) { background: #e2c8f3; }
+.hero-viz--opt1 .hv-swatch i:nth-child(3) { background: #d4855e; }
+.hero-viz--opt1 .hv-swatch i:nth-child(4) { background: #ebe7df; }
+.hero-viz--opt1 .hv-swatch i:nth-child(5) { background: #fff; box-shadow: inset 0 0 0 1px #e6e0d8; }
+
+.hero-viz--opt2 .hv-swatch i:nth-child(1) { background: #2c5493; }
+.hero-viz--opt2 .hv-swatch i:nth-child(2) { background: #68581d; }
+.hero-viz--opt2 .hv-swatch i:nth-child(3) { background: #563052; }
+.hero-viz--opt2 .hv-swatch i:nth-child(4) { background: #bfc1bf; }
+.hero-viz--opt2 .hv-swatch i:nth-child(5) { background: #fff; box-shadow: inset 0 0 0 1px #d1d1d1; }
+
+.hero-viz--opt3 .hv-swatch i:nth-child(1) { background: #c0bdb3; }
+.hero-viz--opt3 .hv-swatch i:nth-child(2) { background: #404f40; }
+.hero-viz--opt3 .hv-swatch i:nth-child(3) { background: #c9bdaf; }
+.hero-viz--opt3 .hv-swatch i:nth-child(4) { background: #d6d0c0; }
+.hero-viz--opt3 .hv-swatch i:nth-child(5) { background: #fff; box-shadow: inset 0 0 0 1px #d1d1d1; }
+
+/* ── Template integration — Figma hero image slot 50:15634 ─────────────────
+   The template's hero image slot renders one of this library's 840x630 hero
+   components at 511 x 383.25. That is not an approximation: 511/383.25 and
+   840/630 are both exactly 4:3, and the slot's own component sizes confirm the
+   ratio (the card is 240x262 in the hero and 146 x 159.3833 in the slot, i.e.
+   240 x 511/840 = 146.0 and 262 x 511/840 = 159.3833). So the only thing this
+   integration contributes is the ratio 511/840.
+
+   .stage__inner already carries transform: scale(var(--stage-scale)) for the
+   responsive breakpoints, and .hero-viz carries transform: scale(var(--s)) --
+   the two nest and multiply, so the breakpoints keep working untouched.
+
+   --s is declared on the .hero-viz here rather than on an ancestor so it cannot
+   reach options.html's .hero-stage, which sets its own --s for viewport-scaling. */
+.stage__inner > .hero-viz { --s: calc(511 / 840); }
+
+/* ══ Normalised composition — shared by the Option tabs and the animation ═════
+   Requested: hold the website card and the UI elements at one size and position
+   so only the brand content changes between the three visuals. This applies both
+   when they cross-dissolve (the Animation tab) and when you flip between them
+   (the Option 1/2/3 tabs) -- the misalignment is the same either way.
+
+   NORMALISED GEOMETRY. The three Figma frames disagree on the storefront box
+   and by 4px on the product card:
+
+       opt1  152,50  563x544   card-x 570
+       opt2  120,54  575x556   card-x 566
+       opt3  117,51  563x544   card-x 566
+
+   The canonical box below is the per-axis MEDIAN, which lands on a real design
+   value in every axis (120 from opt2, 51 from opt3, 563x544 from opt1+opt3,
+   card-x 566 from opt2+opt3) and moves each frame the least: opt2 shifts 3px,
+   opt3 3px, opt1 32px. Everything else in the kit — grid, slider pill, editor
+   card, swatch pill, card size — is already identical in all three frames.
+
+   The inner screenshot is rescaled by the same factor as its panel so the crop
+   is preserved; only opt2's panel changes size, by 2%, and its image aspect
+   drifts 0.073% (it already carried 0.1% of deliberate distortion in Figma).
+
+   Carried by .hv-nrm, which is SEPARATE from the dissolve classes below: the
+   Option 1/2/3 tabs need the normalisation (flipping between them showed the same
+   32px panel shift and 4px card shift as the animation did) but not the fade, so
+   they get .hv-nrm alone and the animation layers get .hv-nrm plus .hv-al--n.
+
+   options.html keeps NO normalisation, so it stays the Figma-verbatim reference
+   that measure_heroes.py validates against the exported renders. Two classes beat
+   the one-class .hero-viz--optN, so none of this depends on rule order. */
+.hero-viz.hv-nrm {
+  --sf-x: 120px; --sf-y: 51px; --sf-w: 563px; --sf-h: 544px;
+  --card-x: 566px;
+}
+.hero-viz--opt2.hv-nrm { --sf-ix: -0.0563px; --sf-iw: 563.1689px; --sf-ih: 1386.0034px; }
+
+/* --sf-k = 563 / --sf-nw: the normalised panel width over the design's own frame
+   width. opt1 and opt3 are both 404px wide natively, so they share a factor. */
+.hero-viz--opt1.hv-nrm { --sf-k: 1.3935644; }   /* 563 / 404  */
+.hero-viz--opt2.hv-nrm { --sf-k: 0.39097222; }  /* 563 / 1440 */
+.hero-viz--opt3.hv-nrm { --sf-k: 1.3935644; }   /* 563 / 404  */
+
+/* ── Product artwork: one place for all three ───────────────────────
+   With the panel and the card pinned, the only thing left hopping between beats
+   was the product artwork.
+
+   I first aligned the artwork's BOUNDING BOXES, and measured that it bought
+   nothing: the hop stayed at 35.4px. The eye tracks a shape's ink, not its box,
+   and the two disagree badly here -- the tube is a thin diagonal inside a large
+   square box, and Option 3's mass sits low because the heavy jars are at the
+   bottom. So align the ink instead. Each product's exact ink was recovered by
+   diffing its layer against the same layer with .hv-prod hidden (so the mask is
+   the artwork itself, not an estimate), giving these centroids in hero space:
+
+     Option 1  tube      9094 ink px   (700.19, 157.25)
+     Option 2  jacket   19930 ink px   (693.42, 187.23)
+     Option 3  7 layers 19429 ink px   (700.93, 191.86)
+
+   -> 34.6px apart in y. That is the hop, and it is almost entirely vertical.
+
+   Target = the per-axis median, (700.19, 187.23), which minimises total travel:
+
+     Option 1  moves ( 0.00, +29.98)
+     Option 2  moves (+6.77,   0.00)
+     Option 3  moves (-0.74,  -4.63)
+
+   Measured result: the three centroids land within 0.27px of each other, down
+   from 35.42px -- and the tube now overhangs the card the way the other two
+   already did, so it reads as better integrated, not merely relocated.
+
+   Nothing is rescaled: --ps is 1 everywhere, so the transform reduces to a pure
+   translation and every composition keeps its authored product size. Scaling was
+   tested and rejected -- maximising ink overlap wants the jacket and bottles
+   shrunk to 79%/76% to match the *smallest* object, which visibly shrinks two of
+   the three designs to chase +0.05 of overlap. The tube simply is a smaller
+   object than the jacket; that is the imagery, not a defect. --ps stays as the
+   one knob if equal visual weight is ever wanted (equal ink area would be
+   1.00 / 0.68 / 0.68 relative).
+
+   .hv-prod itself is inert: 840x630 at 0,0, so its absolutely-positioned children
+   resolve against the same box as before. transform-origin is 0 0 and the three
+   functions read right-to-left, so a point p maps to  target + s * (p - source).
+   The wrapper is added by gen_template_variants.py for the animation page only. */
+.hv-nrm .hv-prod {
+  position: absolute;
+  left: 0; top: 0; width: 840px; height: 630px;
+  --tcx: 700.19px; --tcy: 187.23px;
+  --ps: 1;
+  transform-origin: 0 0;
+  transform: translate(var(--tcx), var(--tcy))
+             scale(var(--ps))
+             translate(calc(-1 * var(--pcx)), calc(-1 * var(--pcy)));
+}
+/* .hero-viz > * sets position:absolute with a CHILD combinator, so the products
+   stop matching it the moment they gain a wrapper and collapse into normal flow.
+   Re-declare it for the wrapper's children -- not by loosening the original rule,
+   which the Option pages depend on. */
+.hv-nrm .hv-prod > * { position: absolute; }
+/* Keyed off the OPTION, not the layer index, so the same three rules serve the
+   Option tabs (one hero per page) and the animation layers (three in one page). */
+.hero-viz--opt1.hv-nrm .hv-prod { --pcx: 700.19px; --pcy: 157.25px; }
+.hero-viz--opt2.hv-nrm .hv-prod { --pcx: 693.42px; --pcy: 187.23px; }
+.hero-viz--opt3.hv-nrm .hv-prod { --pcx: 700.93px; --pcy: 191.86px; }
+
+/* The soft blob under the card was authored per composition (112 / 178 / 118px
+   wide, all centred on x 686). Median, so it stops breathing between beats. */
+.hero-viz.hv-nrm { --card-shadow-w: 118px; }
+
+/* Product contact shadow -- Option 3's rule, applied to Options 1 and 2 ---------
+   Option 3 grounds its three bottles with four SVG layers (six blurred ellipses).
+   Options 1 and 2 shipped none, so the tube and the jacket floated and the shadow
+   popped in and out across the dissolve. Every value below is derived and checked
+   by .tools/fit_contact_shadow.py -- read it for where each number comes from.
+   Spread 1.1965 and drop +3.226px are solved from Option 3, not chosen.
+
+   No `content` in the shared rule, so nothing is generated until an option opts in,
+   and Option 3 opts in to neither: it keeps the ellipses Figma authored, untouched.
+   Scoped to .hv-nrm, so options.html stays the Figma-verbatim reference and the
+   animation layers and the Option tabs are served by the same declaration. */
+.hv-nrm .hv-card::before,
+.hv-nrm .hv-card::after {
+  position: absolute;
+  z-index: 1;                             /* the product is in front of the stepper,
+                                             so its shadow falls on the stepper too */
+  pointer-events: none;
+  height: 6px;
+  border-radius: 50%;
+  background: #525252;                    /* Option 3's authored shadow colour */
+  opacity: .6;                            /* -> 151.2 on white; Option 3 reads 152.08 */
+  filter: blur(2px);
+}
+.hero-viz--opt1.hv-nrm .hv-card::after { content: ""; left: 87.011px; top: 136.310px; width: 55.074px; }  /* tube, one foot */
+.hero-viz--opt2.hv-nrm .hv-card::before { content: ""; left: 45.939px; top: 135.606px; width: 14.752px; }  /* jacket's upper cuff */
+.hero-viz--opt2.hv-nrm .hv-card::after { content: ""; left: 166.507px; top: 149.349px; width: 37.863px; }  /* jacket's lower cuff */
+
+/* ── The cross-dissolve ────────────────────────────────────────────────────────
+   Each layer is a full-bleed OPAQUE 840x630 hero (.hero-viz paints
+   --color-theme-surface-1), stacked in DOM order, so layer 3 is on top.
+
+   A naive crossfade — outgoing fading out while incoming fades in — would wash
+   the whole frame 25% toward the page background at the midpoint, because at
+   50/50 the result is 0.5*B + 0.25*A + 0.25*bg. So the outgoing layer is never
+   faded out under the incoming one; it is held opaque and simply covered:
+
+     0 - 3s    layer 1                       (2 and 3 at 0)
+     3 - 4s    layer 2 fades IN over 1       -> no bg can show through, 1 is opaque
+     4 - 7s    layer 2
+     7 - 8s    layer 3 fades IN over 2
+     8 - 11s   layer 3   ... layer 2 is stepped to 0 at 9s, invisibly, because
+               layer 3 fully covers it (full-bleed and opaque)
+    11 - 12s   layer 3 fades OUT, revealing layer 1 underneath — clean, because
+               layer 2 is already 0
+    12s == 0s  seamless
+
+   So layer 1 never animates at all, and only ever two layers are non-zero.
+   Because the shared kit is pixel-identical in all three layers now, the
+   dissolve is invisible everywhere except the storefront screenshot, the
+   product cutout, the card shadow and the swatch colours. */
+.hv-al--2, .hv-al--3 {
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+.hv-al--1 { opacity: 1; }
+.hv-al--2 { animation-name: hv-al-2; }
+.hv-al--3 { animation-name: hv-al-3; }
+
+@keyframes hv-al-2 {
+  0%,       25%       { opacity: 0 }   /* hold off through layer 1's beat  */
+  33.3333%, 74.99%    { opacity: 1 }   /* fade in 3-4s, hold               */
+  75%,      100%      { opacity: 0 }   /* step off at 9s, under opaque L3  */
+}
+@keyframes hv-al-3 {
+  0%,       58.3333%  { opacity: 0 }
+  66.6667%, 91.6667%  { opacity: 1 }   /* fade in 7-8s, hold to 11s        */
+  100%                { opacity: 0 }   /* fade out 11-12s, revealing L1    */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hv-al--2, .hv-al--3 { animation: none; opacity: 0; }
+}

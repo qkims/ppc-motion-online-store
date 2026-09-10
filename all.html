@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PPC | Motion — Online store</title>
+<style>
+  :root { --tabbar-h: 52px; --line: rgba(0,0,0,.12); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabbar {
+    flex: none;
+    height: var(--tabbar-h);
+    display: flex;
+    align-items: stretch;
+    gap: 4px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--line);
+    background: #fff;
+  }
+  .tabbar__brand {
+    display: flex; align-items: center;
+    margin-right: 12px;
+    font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+    color: rgba(0,0,0,.45);
+    white-space: nowrap;
+  }
+  .tabbar__sep {
+    flex: none; align-self: center;
+    width: 1px; height: 20px; margin: 0 8px;
+    background: var(--line);
+  }
+  .tab {
+    appearance: none;
+    border: 0; background: none;
+    padding: 0 14px;
+    font: inherit; font-size: 13px; font-weight: 500;
+    color: rgba(0,0,0,.55);
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+  }
+  .tab:hover { color: rgba(0,0,0,.85); }
+  .tab[aria-selected="true"] { color: #000; font-weight: 600; }
+  .tab[aria-selected="true"]::after {
+    content: ""; position: absolute; left: 8px; right: 8px; bottom: -1px;
+    height: 2px; background: #000; border-radius: 2px 2px 0 0;
+  }
+  .tab:focus-visible { outline: 2px solid #000; outline-offset: -4px; border-radius: 4px; }
+
+  .panels { flex: 1 1 auto; min-height: 0; position: relative; background: #e9e9e6; }
+  .panel { position: absolute; inset: 0; border: 0; width: 100%; height: 100%; }
+  .panel[hidden] { display: none; }
+  /* The Mobile view is the SAME document as Desktop -- the phone layout lives in
+     styles.css's 430px-measured media query, so all that is needed here is a
+     panel the width of the viewport those numbers were read at.  The .panels
+     backdrop above is invisible behind every other panel, which fills it. */
+  .panel--mobile {
+    left: 50%; right: auto; width: 430px; transform: translateX(-50%);
+    box-shadow: 0 0 0 1px var(--line);
+  }
+</style>
+</head>
+<body>
+
+<!-- The tab list is the single source of truth: the script derives its order,
+     its ids and its document titles from these buttons, so adding a view means
+     adding one button and one iframe and nothing else. -->
+<nav class="tabbar" role="tablist" aria-label="Views">
+  <span class="tabbar__brand">PPC&nbsp;|&nbsp;Motion</span>
+  <button class="tab" role="tab" id="tab-template" aria-controls="panel-template" data-tab="template" data-title="Template — current hero">Template</button>
+  <span class="tabbar__sep" aria-hidden="true"></span>
+  <button class="tab" role="tab" id="tab-desktop" aria-controls="panel-desktop" data-tab="desktop" data-title="All three, building themselves — desktop">Desktop</button>
+  <button class="tab" role="tab" id="tab-mobile" aria-controls="panel-mobile" data-tab="mobile" data-title="All three, building themselves — mobile">Mobile</button>
+  <span class="tabbar__sep" aria-hidden="true"></span>
+  <button class="tab" role="tab" id="tab-static" aria-controls="panel-static" data-tab="static" data-title="All three, as static images">Static</button>
+</nav>
+
+<div class="panels">
+  <iframe class="panel" id="panel-template" role="tabpanel" aria-labelledby="tab-template"
+          title="Template — current hero" data-src="index.html"></iframe>
+  <iframe class="panel" id="panel-desktop" role="tabpanel" aria-labelledby="tab-desktop"
+          title="All three, building themselves — desktop" data-src="template-build.html"
+          data-replay></iframe>
+  <iframe class="panel panel--mobile" id="panel-mobile" role="tabpanel" aria-labelledby="tab-mobile"
+          title="All three, building themselves — mobile" data-src="template-build.html"
+          data-replay></iframe>
+  <iframe class="panel" id="panel-static" role="tabpanel" aria-labelledby="tab-static"
+          title="All three, as static images" data-src="template-static.html"></iframe>
+</div>
+
+<script nonce="60c836ff43a91dcfa73d1b93d07468c2">
+(function () {
+  var buttons = [].slice.call(document.querySelectorAll('.tabbar [role="tab"]'));
+  var TABS    = buttons.map(function (b) { return b.dataset.tab; });
+  var tabs = {}, panels = {}, titles = {};
+  buttons.forEach(function (b) {
+    var id = b.dataset.tab;
+    tabs[id]   = b;
+    panels[id] = document.getElementById('panel-' + id);
+    titles[id] = b.dataset.title || b.textContent;
+  });
+
+  function show(id) {
+    if (TABS.indexOf(id) === -1) id = TABS[0];
+    TABS.forEach(function (t) {
+      var on = t === id;
+      tabs[t].setAttribute('aria-selected', on ? 'true' : 'false');
+      tabs[t].tabIndex = on ? 0 : -1;
+      panels[t].hidden = !on;
+      // Load on first activation so hidden panels cost nothing.
+      if (on && !panels[t].src) panels[t].src = panels[t].dataset.src;
+      // The build page runs its timeline ONCE and holds on the finished frame
+      // (round 4: "after the editing is done, can we have the 3 webistes slide
+      // from right to left no loop?"). Re-entering the tab would therefore show
+      // a still image, so every panel marked data-replay starts over on every
+      // activation -- including a click on the tab you are already on, which is
+      // the replay control. `location.replace` rather than a fresh `src` so the
+      // reload leaves no extra history entry to click back through.  Desktop and
+      // Mobile are the same document at two widths, so both carry the mark and
+      // each replays independently.
+      else if (on && 'replay' in panels[t].dataset) {
+        try { panels[t].contentWindow.location.replace(panels[t].dataset.src); }
+        catch (e) { panels[t].src = panels[t].dataset.src; }
+      }
+    });
+    document.title = titles[id] + ' · PPC | Motion';
+  }
+
+  function fromHash() { return (location.hash || '').replace(/^#/, ''); }
+
+  TABS.forEach(function (id) {
+    tabs[id].addEventListener('click', function () {
+      if (fromHash() === id) show(id); else location.hash = id;
+    });
+  });
+
+  // Arrow-key traversal, per the tablist pattern.
+  document.querySelector('.tabbar').addEventListener('keydown', function (e) {
+    var cur = fromHash();
+    var i = TABS.indexOf(cur); if (i === -1) i = 0;
+    if (e.key === 'ArrowRight') { location.hash = TABS[(i + 1) % TABS.length]; }
+    else if (e.key === 'ArrowLeft') { location.hash = TABS[(i - 1 + TABS.length) % TABS.length]; }
+    else return;
+    e.preventDefault();
+    tabs[fromHash()].focus();
+  });
+
+  window.addEventListener('hashchange', function () { show(fromHash()); });
+  show(fromHash());
+})();
+</script>
+
+</body>
+</html>

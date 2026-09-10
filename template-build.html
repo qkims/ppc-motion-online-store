@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start an online store for free — Shopify (Animation)</title>
+<meta name="description" content="Shopify is the all-in-one platform to build, run, and grow your online boutique.">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="heroes.css">
+<link rel="stylesheet" href="builds.css">
+<link rel="stylesheet" href="products.css">
+</head>
+<body>
+
+<!-- ══ Header (L1) ══ Figma 50:15686 — page-container level, pinned to top edge.
+     Hero carries padding-top: var(--spacing-header-height) so content clears it. -->
+<header class="header" data-node-id="50:15686">
+  <nav class="header__nav" aria-label="Main">
+    <div class="header__main-nav">
+      <a class="header__logo" href="#" aria-label="Shopify">
+        <!-- Code Connect: ShopifyLogo monotone=False iconOnly=False -> sanctioned lockup, 126.05 x 36 -->
+        <img src="assets/shopify-logo.svg" alt="Shopify" width="126.0504" height="36">
+      </a>
+    </div>
+    <div class="header__secondary-nav">
+      <a class="btn btn--primary btn--lg" href="#">Start for free</a>
+    </div>
+  </nav>
+</header>
+
+<main class="page">
+
+  <!-- ══ Hero Floating Image ══ Figma 50:15630 -->
+  <section class="hero" data-node-id="50:15630">
+    <div class="hero__inner">
+
+      <!-- Content Column — Figma 50:15631 (w 618) -->
+      <div class="hero__content" data-node-id="50:15631">
+        <!-- Heading Group CTA — Figma 50:15632, Type=Email -->
+        <div class="heading-group-cta" data-node-id="50:15632">
+          <div class="heading-group">
+            <h1 class="t1">Start an online store for free</h1>
+            <p class="body-lg">Shopify is the all-in-one platform to build, run, and grow your online boutique. Start free, then get 3 months for $1/month</p>
+          </div>
+          <div class="cta">
+            <!-- Email-capture card.  Its STRUCTURE is the free-trial project's
+                 canonical .signup-card (Figma node 207:6658) -- the form, the flex
+                 column, the label stack, the round pill, the 48px disc.  Every
+                 NUMBER and COLOUR is measured off the reference screenshot instead;
+                 see the .signup-card block in styles.css for the full table of
+                 where the two disagree.  The middle line has no counterpart in the
+                 component at all.  Replaces the light email field + separate pill
+                 button that used to sit here. -->
+            <form class="signup-card" action="#" method="get">
+              <div class="signup-card__label">
+                <p class="signup-card__cta">Start for free, stay for $1</p>
+                <p class="signup-card__benefit">Earn $10,000+ back in credits.</p>
+                <p class="signup-card__disclaimer">You agree to receive marketing emails.</p>
+              </div>
+              <div class="signup-card__field">
+                <input class="signup-card__email" type="email" name="email"
+                       placeholder="Enter your email" aria-label="Enter your email"
+                       autocomplete="email" required>
+                <button class="signup-card__submit" type="submit" aria-label="Start for free">
+                  <!-- Stroked right-arrow, 16x12 of ink at a 1px stroke, exactly
+                       45 degrees, measured row by row off the reference.  The
+                       component's is a FILLED arrow whose bar comes out 2.4px at
+                       this size and reads chunky beside it. -->
+                  <svg class="signup-card__arrow" viewBox="0 0 16 12" fill="none"
+                       stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                       stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M0.5 6H15M9.5 0.5L15 6L9.5 11.5"/>
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image Column — Figma 50:15633 (w 511) -->
+      <div class="hero__image" data-node-id="50:15633">
+        <!-- Hero image slot — all three visuals of "Motion Direction 1 ( New Visuals )", Figma 74:42950,
+             stacked as three full-bleed opaque layers that cross-dissolve on a 12s loop, each
+             one building itself while it is the layer on screen and annotated with the
+             selection frame of Figma 98:10283 (builds.css). The storefront box, product card
+             and product artwork are normalised to one geometry (hv-nrm / hv-prod in
+             heroes.css) so only the brand content changes;
+             the rest of the kit is already
+             identical across the three frames. Still the 511 x 383.25 slot at exactly 511/840. -->
+        <div class="stage" data-node-id="74:42950">
+         <div class="stage__inner">
+
+          <!-- layer 1 of 3 — Option 1, Figma 74:43445 (hero-store-builder-fashion) — drawing an input field, then typing the header lockup into it -->
+          <div class="hero-viz hv-al hv-al--1 hv-bd hv-nrm hero-viz--opt1" data-node-id="74:43445">
+          <!-- grid — 74:xxxxx, gradient hairlines on exact pixel rows/columns -->
+          <img class="hv-grid-h" src="assets/heroes/shared/grid-h.svg" alt="">
+          <img class="hv-grid-v" src="assets/heroes/shared/grid-v.svg" alt="">
+
+          <!-- storefront screenshot, clipped to a 10px radius -->
+          <div class="hv-storefront">
+            <div class="sf sf--opt1" data-node-id="86:43906">
+
+              <!-- announcement bar (clipped at the frame top: Figma y = -0.15) -->
+              <div style="left:.09px;top:-.15px;width:404px;height:10.943px;background:#ee542f"></div>
+
+              <!-- header: account / search / cart -->
+              <img src="assets/heroes/opt1/sf/icons.svg" alt="" style="left:331px;top:20.729px;width:44.3425px;height:8.1571px" data-node-id="86:43918">
+
+              <!-- PITCH lockup, baked to one raster. Three interleaved layers: a Union shape,
+                   the product texture, and the wordmark in Climate Crisis painted LAST, over
+                   the texture. A logotype is not animated content, and baking it avoids
+                   shipping a variable display font just to redraw it. -->
+              <div class="bd-sel bd-sel--head" data-bd-label="header" style="left:13.21px;top:36.38px;width:361.249px;height:167.265px">
+                <img src="assets/heroes/opt1/sf/pitch-empty.jpg" alt="" style="left:0;top:0;width:100%;height:100%">
+                <img class="bd-word" src="assets/heroes/opt1/sf/pitch.jpg" alt="" style="left:0;top:0;width:100%;height:100%" data-node-id="86:43907">
+                <i class="bd-caret"></i>
+              </div>
+
+              <!-- collection band 1 -->
+              <div style="left:.11px;top:249.02px;width:404px;height:134.967px;background:#dec9f0"></div>
+              <img class="sf-cover" src="assets/heroes/opt1/sf/jar.jpg" alt="" style="left:204.59px;top:249.02px;width:199.513px;height:134.967px">
+              <!-- product name + title.  These were two 6px placeholder rules (76 and 101
+                   wide, centred on 98 and 97.5); they are now the text they stood for, so
+                   the widths are gone and each line is anchored by its CENTRE instead --
+                   one column at 98 for both, because two hand-drawn placeholders
+                   disagreeing by half a pixel is not a fact about the design.
+
+                   The ink is #9f7dbc, which is not a new colour: it is this band's own
+                   price colour, and the price two lines below proves it reads as text at
+                   this size.  9px against the rules' 6px height is cap-height for cap-
+                   height in Liter -- the same optical weight the rules had. -->
+              <p class="sf-t sf-t--liter" style="left:98px;top:295.4px;translate:-50%;font-size:9px;line-height:9px;letter-spacing:.4px;color:#9f7dbc">VELORA</p>
+              <p class="sf-t sf-t--liter" style="left:98px;top:305.4px;translate:-50%;font-size:9px;line-height:9px;letter-spacing:.4px;color:#9f7dbc">SEDIRA NO. 04</p>
+              <p class="sf-t sf-t--liter" style="left:89px;top:320px;font-size:12px;line-height:12.4px;color:#9f7dbc" data-node-id="86:44123">&euro;61</p>
+
+              <!-- collection band 2 — 6.3px of it clears the fold -->
+              <div style="left:.11px;top:384.03px;width:404px;height:134.967px;background:#4c1609"></div>
+              <div class="sf-clip" style="left:0;top:384px;width:205px;height:257px;background:#f1ebe2" data-node-id="86:44081">
+                <img src="assets/heroes/opt1/sf/pump.png" alt="" style="left:12.93%;top:-.29%;width:61.91%;height:103.45%">
+              </div>
+            </div>
+          </div>
+
+          <!-- slider pill: solid fill, dashed remainder, thumb -->
+          <div class="hv-slider">
+            <div class="hv-slider__solid"></div>
+            <div class="hv-slider__dashes"></div>
+            <div class="hv-slider__thumb"></div>
+          </div>
+
+          <!-- rich-text editor card -->
+          <div class="hv-editor">
+            <div class="hv-editor__head"></div>
+          <img class="hv-ic hv-ic--magic" src="assets/heroes/shared/icon-magic.svg" alt="">
+          <img class="hv-ic hv-ic--text" src="assets/heroes/shared/icon-text.svg" alt="">
+          <img class="hv-ic hv-ic--chevron" src="assets/heroes/shared/icon-chevron-down.svg" alt="">
+          <img class="hv-ic hv-ic--bold" src="assets/heroes/shared/icon-bold.svg" alt="">
+          <img class="hv-ic hv-ic--italic" src="assets/heroes/shared/icon-italic.svg" alt="">
+          <img class="hv-ic hv-ic--link" src="assets/heroes/shared/icon-link.svg" alt="">
+          <img class="hv-ic hv-ic--bulleted" src="assets/heroes/shared/icon-list-bulleted.svg" alt="">
+          <img class="hv-ic hv-ic--numbered" src="assets/heroes/shared/icon-list-numbered.svg" alt="">
+            <span class="hv-bar hv-bar--1"></span>
+            <span class="hv-bar hv-bar--2"></span>
+            <span class="hv-bar hv-bar--3"></span>
+            <i class="bd-hit bd-hit--text"></i>
+            <i class="bd-hit bd-hit--bold"></i>
+            <i class="bd-hit bd-hit--magic"></i>
+          </div>
+
+          <!-- theme swatch pill -->
+          <div class="hv-swatch"><i></i><i></i><i></i><i></i><i></i></div>
+
+          <!-- product card: shadow / quantity stepper / add-to-cart -->
+          <div class="hv-card">
+            <img class="hv-card__shadow" src="assets/heroes/opt1/card-shadow.svg" alt="">
+            <div class="hv-card__amount">
+              <span class="hv-card__minus"></span>
+              <span class="hv-card__qty">1</span>
+              <span class="hv-card__plus"></span>
+            </div>
+            <div class="hv-card__btn"><img src="assets/heroes/shared/icon-cart.svg" alt=""></div>
+          </div>
+
+          <!-- cutout: mint tube, rotated -165deg -->
+          <div class="hv-prod">
+            <img class="hv-cutout" src="assets/heroes/opt1/tube.png" alt="">
+            <video class="hv-vid" src="assets/heroes/opt1/product.webm"
+                   poster="assets/heroes/opt1/product-poster.png"
+                   preload="auto" muted playsinline data-film="1" aria-hidden="true"></video>
+          </div>
+          </div>
+
+          <!-- layer 2 of 3 — Option 2, Figma 74:43447 (hero-store-builder-health) — drawing the hero frame, then dropping the image into it -->
+          <div class="hero-viz hv-al hv-al--2 hv-bd hv-nrm hero-viz--opt2" data-node-id="74:43447">
+          <!-- grid — 74:xxxxx, gradient hairlines on exact pixel rows/columns -->
+          <img class="hv-grid-h" src="assets/heroes/shared/grid-h.svg" alt="">
+          <img class="hv-grid-v" src="assets/heroes/shared/grid-v.svg" alt="">
+
+          <!-- storefront screenshot, clipped to a 10px radius -->
+          <div class="hv-storefront">
+            <div class="sf sf--opt2" data-node-id="74:43372">
+
+              <!-- header -->
+              <div style="left:64px;top:59px;width:57px;height:13px;border-radius:50px;background:#000" data-node-id="74:43358"></div>
+              <div style="left:145px;top:59px;width:57px;height:13px;border-radius:50px;background:#000" data-node-id="74:43359"></div>
+              <div style="left:616.6485px;top:49.5px;width:206.703px;height:32px" data-node-id="74:43349">
+                <img src="assets/heroes/opt2/sf/w4.svg" alt="" style="left:0.0px;top:1.4499px;width:44.9293px;height:29.414px">
+                <img src="assets/heroes/opt2/sf/w3.svg" alt="" style="left:45.681px;top:1.4499px;width:33.2702px;height:29.414px">
+                <img src="assets/heroes/opt2/sf/w1.svg" alt="" style="left:81.007px;top:0.368px;width:37.6441px;height:31.5731px">
+                <img src="assets/heroes/opt2/sf/w2.svg" alt="" style="left:119.867px;top:1.4499px;width:40.0586px;height:29.414px">
+                <img src="assets/heroes/opt2/sf/w5.svg" alt="" style="left:160.895px;top:1.4499px;width:44.9293px;height:29.414px">
+              </div>
+              <img src="assets/heroes/opt2/sf/ic-search.svg" alt="" style="left:1273.79px;top:54.93px;width:17.6645px;height:18.9001px" data-node-id="74:43345">
+              <img src="assets/heroes/opt2/sf/ic-acct-ring.svg" alt="" style="left:1314.692px;top:56.608px;width:8.04434px;height:8.04434px" data-node-id="74:43346">
+              <img src="assets/heroes/opt2/sf/ic-acct-body.svg" alt="" style="left:1311.720px;top:65.808px;width:13.9992px;height:6.89515px" data-node-id="74:43346">
+              <img src="assets/heroes/opt2/sf/ic-bag.svg" alt="" style="left:1345.585px;top:54.662px;width:17.7131px;height:18.5832px" data-node-id="74:43338">
+
+              <!-- hero, baked to one raster: five layers interleave with two headline texts
+                   (SPRING / 2026) that the topmost images cover completely, so the layers
+                   cannot be split without making hidden type visible. -->
+              <div class="bd-sel bd-sel--hero" data-bd-label="hero" style="left:30px;top:128.9px;width:1380px;height:596px">
+                <img src="assets/heroes/opt2/sf/hero.jpg" alt="" style="left:0;top:0;width:100%;height:100%;border-radius:10px" data-node-id="74:42442">
+              </div>
+
+              <!-- product row, 5 x 266.4 with 12px gutters -->
+              <img src="assets/heroes/opt2/sf/pc1.jpg" alt="" style="left:30.0px;top:766.9px;width:266.4px;height:345px;border-radius:10px" data-node-id="74:42451">
+              <img src="assets/heroes/opt2/sf/pc2.jpg" alt="" style="left:308.4px;top:766.9px;width:266.4px;height:345px;border-radius:10px" data-node-id="74:42452">
+              <img src="assets/heroes/opt2/sf/pc3.jpg" alt="" style="left:586.8px;top:766.9px;width:266.4px;height:345px;border-radius:10px" data-node-id="74:42453">
+              <img src="assets/heroes/opt2/sf/pc4.jpg" alt="" style="left:865.2px;top:766.9px;width:266.4px;height:345px;border-radius:10px" data-node-id="74:42454">
+              <img src="assets/heroes/opt2/sf/pc5.jpg" alt="" style="left:1143.6px;top:766.9px;width:266.4px;height:345px;border-radius:10px" data-node-id="74:42455">
+
+              <!-- product names.  The design covered these with grey rules and the rules are
+                   gone (see below); only the localisable half of each string changed -- the
+                   numbers are Figma's own.  Everything else, including .sf-t--rcb's 16px
+                   uppercase, is the design's. -->
+              <p class="sf-t sf-t--rcb" style="left:38.0px;top:1127.9px;width:226.709px">Velo 468</p>
+              <p class="sf-t sf-t--rcb" style="left:316.4px;top:1127.9px;width:226.709px">Sarn 3454</p>
+              <p class="sf-t sf-t--rcb" style="left:594.8px;top:1127.9px;width:226.709px">Oleta 1210</p>
+              <p class="sf-t sf-t--rcb" style="left:873.2px;top:1127.9px;width:226.709px">Marne 4400</p>
+              <p class="sf-t sf-t--rcb" style="left:1151.6px;top:1127.9px;width:226.709px">Corvi 808</p>
+
+              <!-- prices -->
+              <p class="sf-t sf-t--rcb" style="left:190.063px;top:1127.9px;width:97.937px;text-align:right;font-size:28px;line-height:19.84px;letter-spacing:-0.04em">$210</p>
+              <p class="sf-t sf-t--rcb" style="left:468.463px;top:1127.9px;width:97.937px;text-align:right;font-size:28px;line-height:19.84px;letter-spacing:-0.04em">$298</p>
+              <p class="sf-t sf-t--rcb" style="left:746.863px;top:1127.9px;width:97.937px;text-align:right;font-size:28px;line-height:19.84px;letter-spacing:-0.04em">$198</p>
+              <p class="sf-t sf-t--rcb" style="left:1025.263px;top:1127.9px;width:97.937px;text-align:right;font-size:28px;line-height:19.84px;letter-spacing:-0.04em">$235</p>
+              <p class="sf-t sf-t--rcb" style="left:1303.663px;top:1127.9px;width:97.937px;text-align:right;font-size:28px;line-height:19.84px;letter-spacing:-0.04em">$250</p>
+
+
+              <!-- one-up pair; 630.66px tall in Figma, cut to 222px because the fold is at
+                   1391.4 and the page does not scroll -->
+              <img src="assets/heroes/opt2/sf/oneup-l.jpg" alt="" style="left:30px;top:1185.9px;width:690px;height:222px;border-radius:10px 0 0 10px" data-node-id="74:42456">
+              <img src="assets/heroes/opt2/sf/oneup-r.jpg" alt="" style="left:720px;top:1185.9px;width:690px;height:222px;border-radius:0 10px 10px 0" data-node-id="74:42456">
+            </div>
+          </div>
+
+          <!-- slider pill: solid fill, dashed remainder, thumb -->
+          <div class="hv-slider">
+            <div class="hv-slider__solid"></div>
+            <div class="hv-slider__dashes"></div>
+            <div class="hv-slider__thumb"></div>
+          </div>
+
+          <!-- rich-text editor card -->
+          <div class="hv-editor">
+            <div class="hv-editor__head"></div>
+          <img class="hv-ic hv-ic--magic" src="assets/heroes/shared/icon-magic.svg" alt="">
+          <img class="hv-ic hv-ic--text" src="assets/heroes/shared/icon-text.svg" alt="">
+          <img class="hv-ic hv-ic--chevron" src="assets/heroes/shared/icon-chevron-down.svg" alt="">
+          <img class="hv-ic hv-ic--bold" src="assets/heroes/shared/icon-bold.svg" alt="">
+          <img class="hv-ic hv-ic--italic" src="assets/heroes/shared/icon-italic.svg" alt="">
+          <img class="hv-ic hv-ic--link" src="assets/heroes/shared/icon-link.svg" alt="">
+          <img class="hv-ic hv-ic--bulleted" src="assets/heroes/shared/icon-list-bulleted.svg" alt="">
+          <img class="hv-ic hv-ic--numbered" src="assets/heroes/shared/icon-list-numbered.svg" alt="">
+            <span class="hv-bar hv-bar--1"></span>
+            <span class="hv-bar hv-bar--2"></span>
+            <span class="hv-bar hv-bar--3"></span>
+            <i class="bd-hit bd-hit--text"></i>
+            <i class="bd-hit bd-hit--bold"></i>
+            <i class="bd-hit bd-hit--magic"></i>
+          </div>
+
+          <!-- theme swatch pill -->
+          <div class="hv-swatch"><i></i><i></i><i></i><i></i><i></i></div>
+
+          <!-- product card: shadow / quantity stepper / add-to-cart -->
+          <div class="hv-card">
+            <img class="hv-card__shadow" src="assets/heroes/opt2/card-shadow.svg" alt="">
+            <div class="hv-card__amount">
+              <span class="hv-card__minus"></span>
+              <span class="hv-card__qty">1</span>
+              <span class="hv-card__plus"></span>
+            </div>
+            <div class="hv-card__btn"><img src="assets/heroes/shared/icon-cart.svg" alt=""></div>
+          </div>
+
+          <!-- cutout: jacket -->
+          <div class="hv-prod">
+            <img class="hv-cutout" src="assets/heroes/opt2/jacket.png" alt="">
+            <video class="hv-vid" src="assets/heroes/opt2/product.webm"
+                   poster="assets/heroes/opt2/product-poster.png"
+                   preload="auto" muted playsinline data-film="2" aria-hidden="true"></video>
+          </div>
+          </div>
+
+          <!-- layer 3 of 3 — Option 3, Figma 74:43446 (hero-store-builder-food) — drawing a three-box grid, dropping the products in, then loading two prices and two skeleton bars -->
+          <div class="hero-viz hv-al hv-al--3 hv-bd hv-nrm hero-viz--opt3" data-node-id="74:43446">
+          <!-- grid — 74:xxxxx, gradient hairlines on exact pixel rows/columns -->
+          <img class="hv-grid-h" src="assets/heroes/shared/grid-h.svg" alt="">
+          <img class="hv-grid-v" src="assets/heroes/shared/grid-v.svg" alt="">
+
+          <!-- storefront screenshot, clipped to a 10px radius -->
+          <div class="hv-storefront">
+            <div class="sf sf--opt3" data-node-id="84:43629">
+
+              <!-- header: B. roundel
+
+                   LOWERED by 2.82855px from Figma's 4.43, which is not a nudge but the offset
+                   that puts the roundel's optical centre on the icon row's.  The ring is a
+                   circle (cx = cy = 9.5 in a 19 viewBox), so its optical centre IS its box
+                   centre, 1.3396 + 9.5004 = 10.84 down from this box's top; the icon row's
+                   viewBox is tight (measured: ink 13.961..22.007 against a box of
+                   14.016..22.172), so its centre is 14.02 + 4.07855 = 18.09855.  Figma had the
+                   two 2.83px apart, with the logo the higher of them.
+                                 18.09855 - 10.84 = 7.25855
+                   test_builds.py holds the two centres together as a rendered check, which is
+                   the part that cannot drift -- these three numbers are a literal apiece and
+                   nothing in the sheet knows they are related. -->
+              <div style="left:186.04px;top:7.25855px;width:32px;height:32px" data-node-id="84:43668">
+                <!-- 84:43669 is an 18px circle centred at (50%-0.03, 50%-5.16) of this 32x32
+                     box, and its image is inset -2.78%, so the SVG box is 19.0008 square --
+                     which is exactly the ring asset's own 19x19 viewBox. -->
+                <img src="assets/heroes/opt3/sf/logo-ring.svg" alt="" style="left:6.4696px;top:1.3396px;width:19.0008px;height:19.0008px" data-node-id="84:43669">
+                <img src="assets/heroes/opt3/sf/logo-bond.svg" alt="" style="left:13.97px;top:7.84px;width:5.16691px;height:6.83667px" data-node-id="84:43671">
+              </div>
+              <img src="assets/heroes/opt3/sf/icons.svg" alt="" style="left:332px;top:14.02px;width:44.3425px;height:8.1571px" data-node-id="84:43742">
+
+              <!-- product 1 -->
+              <div class="bd-sel bd-sel--img1" data-bd-label="image 1" style="left:28px;top:55.27px;width:157px;height:157px">
+                <img src="assets/heroes/opt3/sf/img-hero.jpg" alt="" style="left:0;top:0;width:100%;height:100%" data-node-id="84:43748">
+                <i class="bd-gen"></i>
+              </div>
+
+              <!-- product 2 -->
+              <div class="bd-sel bd-sel--img2" data-bd-label="image 2" style="left:244px;top:144.27px;width:134px;height:160px">
+                <img src="assets/heroes/opt3/sf/img-spot.jpg" alt="" style="left:0;top:0;width:100%;height:100%" data-node-id="84:43631">
+                <i class="bd-gen"></i>
+              </div>
+
+              <!-- product 1 name + price.  The name was a 40x6 rule; it is now the text it
+                   stood for.  The WIDTH IS DROPPED ON PURPOSE: builds.css gives these two
+                   `overflow: hidden` so the wipe can reveal them, and a 40px box would clip
+                   any name longer than 40px -- with no width the absolutely-positioned box
+                   shrink-wraps the nowrap line, so the clip reveals exactly the text and
+                   nothing is cut.  Ink is #761e0b, the store's own and only text colour;
+                   the rule's #c9bdaf was chosen for a solid 6px bar and text covers about a
+                   fifth of its box, so the same value would have been a fifth of the mark. -->
+              <p class="bd-bar bd-bar--1 sf-t sf-t--inter" style="left:28.32px;top:217.6px;font-size:8px;line-height:8px;color:#761e0b" data-node-id="84:43634">Nomi 01</p>
+              <p class="bd-price bd-price--1 sf-t sf-t--inter" style="left:28px;top:228px;font-size:11px;line-height:1.21;color:#761e0b" data-node-id="84:43637">&yen;3,200</p>
+
+              <!-- product 3 — crosses the fold -->
+              <div class="bd-sel bd-sel--img3" data-bd-label="image 3" style="left:50px;top:262.27px;width:130px;height:154px">
+                <img src="assets/heroes/opt3/sf/img-jewel.jpg" alt="" style="left:0;top:0;width:100%;height:100%" data-node-id="84:43633">
+                <i class="bd-gen"></i>
+              </div>
+
+              <!-- product 2 name + price -->
+              <p class="bd-bar bd-bar--2 sf-t sf-t--inter" style="left:244.32px;top:308.6px;font-size:8px;line-height:8px;color:#761e0b" data-node-id="84:43640">Tavi 02</p>
+              <p class="bd-price bd-price--2 sf-t sf-t--inter" style="left:244px;top:319px;font-size:11px;line-height:1.21;color:#761e0b" data-node-id="84:43643">&yen;1,300</p>
+            </div>
+          </div>
+
+          <!-- slider pill: solid fill, dashed remainder, thumb -->
+          <div class="hv-slider">
+            <div class="hv-slider__solid"></div>
+            <div class="hv-slider__dashes"></div>
+            <div class="hv-slider__thumb"></div>
+          </div>
+
+          <!-- rich-text editor card -->
+          <div class="hv-editor">
+            <div class="hv-editor__head"></div>
+          <img class="hv-ic hv-ic--magic" src="assets/heroes/shared/icon-magic.svg" alt="">
+          <img class="hv-ic hv-ic--text" src="assets/heroes/shared/icon-text.svg" alt="">
+          <img class="hv-ic hv-ic--chevron" src="assets/heroes/shared/icon-chevron-down.svg" alt="">
+          <img class="hv-ic hv-ic--bold" src="assets/heroes/shared/icon-bold.svg" alt="">
+          <img class="hv-ic hv-ic--italic" src="assets/heroes/shared/icon-italic.svg" alt="">
+          <img class="hv-ic hv-ic--link" src="assets/heroes/shared/icon-link.svg" alt="">
+          <img class="hv-ic hv-ic--bulleted" src="assets/heroes/shared/icon-list-bulleted.svg" alt="">
+          <img class="hv-ic hv-ic--numbered" src="assets/heroes/shared/icon-list-numbered.svg" alt="">
+            <span class="hv-bar hv-bar--1"></span>
+            <span class="hv-bar hv-bar--2"></span>
+            <span class="hv-bar hv-bar--3"></span>
+            <i class="bd-hit bd-hit--text"></i>
+            <i class="bd-hit bd-hit--bold"></i>
+            <i class="bd-hit bd-hit--magic"></i>
+          </div>
+
+          <!-- theme swatch pill -->
+          <div class="hv-swatch"><i></i><i></i><i></i><i></i><i></i></div>
+
+          <!-- product card: shadow / quantity stepper / add-to-cart -->
+          <div class="hv-card">
+            <img class="hv-card__shadow" src="assets/heroes/opt3/card-shadow.svg" alt="">
+            <div class="hv-card__amount">
+              <span class="hv-card__minus"></span>
+              <span class="hv-card__qty">1</span>
+              <span class="hv-card__plus"></span>
+            </div>
+            <div class="hv-card__btn"><img src="assets/heroes/shared/icon-cart.svg" alt=""></div>
+          </div>
+
+          <!-- products 74:43010 — 4 shadow/ellipse layers then bottle, pump, jar -->
+          <div class="hv-prod">
+            <img class="hv-p1" src="assets/heroes/opt3/prod-shadow-1.svg" alt="">
+            <img class="hv-p2" src="assets/heroes/opt3/prod-shadow-2.svg" alt="">
+            <img class="hv-p3" src="assets/heroes/opt3/prod-ellipse-1.svg" alt="">
+            <img class="hv-p4" src="assets/heroes/opt3/prod-ellipse-2.svg" alt="">
+            <img class="hv-p5" src="assets/heroes/opt3/prod-bottle.png" alt="">
+            <div class="hv-p6"><img src="assets/heroes/opt3/prod-pump.png" alt=""></div>
+            <img class="hv-p7" src="assets/heroes/opt3/prod-jar.png" alt="">
+            <video class="hv-vid" src="assets/heroes/opt3/product.webm"
+                   poster="assets/heroes/opt3/product-poster.png"
+                   preload="auto" muted playsinline data-film="3" aria-hidden="true"></video>
+          </div>
+          </div>
+
+         </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ Section: Logo Group Marquee ══ Figma 50:15635 -->
+  <section class="section" data-node-id="50:15635">
+    <!-- Section Heading — Figma 50:15636, Screen=LG Center=False Horizontal=False -->
+    <div class="section-heading" data-node-id="50:15636">
+      <div class="heading-group-cta heading-group-cta--narrow">
+        <div class="heading-group">
+          <h2 class="t5">Powering millions of businesses worldwide</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo Group Marquee — Figma 50:15637.
+         Motion replicated from shopify.com/zh/ppc/online-store:
+           duplicated tracks, each min-width:100%, animation: marquee-ltr <dur> linear infinite,
+           @keyframes marquee-ltr { 0% translateX(-100%) -> 100% translateX(0) }
+         marquee.js keeps <dur> at a constant 47.76 px/s to match the reference's cadence. -->
+    <div class="logo-marquee" id="logoMarquee" dir="ltr" role="group" aria-label="Brands powered by Shopify" data-node-id="50:15637">
+      <ul class="logo-track" data-marquee-track>
+        <li class="logo-cell"><img src="assets/logos/allbirds.svg" alt="Allbirds" style="left:14.2859%;top:23.65%;width:71.4283%;height:52.7066%"></li>
+        <li class="logo-cell"><img src="assets/logos/gymshark.svg" alt="Gymshark" style="left:7.5715%;top:33.8%;width:84.8570%;height:32.4000%"></li>
+        <li class="logo-cell"><img src="assets/logos/brooklinen.svg" alt="Brooklinen" style="left:11.1905%;top:35.0%;width:77.6190%;height:30.0000%"></li>
+        <li class="logo-cell"><img src="assets/logos/leesa.svg" alt="Leesa" style="left:20.0001%;top:31.21%;width:59.9999%;height:37.5836%"></li>
+        <li class="logo-cell"><img src="assets/logos/kylie.svg" alt="Kylie Cosmetics" style="left:24.7616%;top:26.44%;width:50.4768%;height:54.7330%"></li>
+        <li class="logo-cell"><img src="assets/logos/crate-and-barrel.svg" alt="Crate&amp;Barrel" style="left:7.3811%;top:36.11%;width:85.2379%;height:27.7778%"></li>
+        <li class="logo-cell"><img src="assets/logos/untuckit.svg" alt="UNTUCKit" style="left:7.1429%;top:36.07%;width:85.7141%;height:27.8669%"></li>
+        <li class="logo-cell"><img src="assets/logos/death-wish-coffee.svg" alt="Death Wish Coffee" style="left:30.2381%;top:3.89%;width:39.5238%;height:92.2224%"></li>
+        <li class="logo-cell"><img src="assets/logos/jungalow.svg" alt="Jungalow" style="left:-0.0008%;top:40.56%;width:100.0016%;height:18.8866%"></li>
+        <li class="logo-cell"><img src="assets/logos/rebecca-minkoff.svg" alt="Rebecca Minkoff" style="left:0.0000%;top:42.29%;width:100.0000%;height:15.4185%"></li>
+      </ul>
+      <ul class="logo-track" data-marquee-track aria-hidden="true">
+        <li class="logo-cell"><img src="assets/logos/allbirds.svg" alt="" style="left:14.2859%;top:23.65%;width:71.4283%;height:52.7066%"></li>
+        <li class="logo-cell"><img src="assets/logos/gymshark.svg" alt="" style="left:7.5715%;top:33.8%;width:84.8570%;height:32.4000%"></li>
+        <li class="logo-cell"><img src="assets/logos/brooklinen.svg" alt="" style="left:11.1905%;top:35.0%;width:77.6190%;height:30.0000%"></li>
+        <li class="logo-cell"><img src="assets/logos/leesa.svg" alt="" style="left:20.0001%;top:31.21%;width:59.9999%;height:37.5836%"></li>
+        <li class="logo-cell"><img src="assets/logos/kylie.svg" alt="" style="left:24.7616%;top:26.44%;width:50.4768%;height:54.7330%"></li>
+        <li class="logo-cell"><img src="assets/logos/crate-and-barrel.svg" alt="" style="left:7.3811%;top:36.11%;width:85.2379%;height:27.7778%"></li>
+        <li class="logo-cell"><img src="assets/logos/untuckit.svg" alt="" style="left:7.1429%;top:36.07%;width:85.7141%;height:27.8669%"></li>
+        <li class="logo-cell"><img src="assets/logos/death-wish-coffee.svg" alt="" style="left:30.2381%;top:3.89%;width:39.5238%;height:92.2224%"></li>
+        <li class="logo-cell"><img src="assets/logos/jungalow.svg" alt="" style="left:-0.0008%;top:40.56%;width:100.0016%;height:18.8866%"></li>
+        <li class="logo-cell"><img src="assets/logos/rebecca-minkoff.svg" alt="" style="left:0.0000%;top:42.29%;width:100.0000%;height:15.4185%"></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<script nonce="6500762036bbf84257ed69fd974702bc" src="marquee.js"></script>
+<script nonce="6500762036bbf84257ed69fd974702bc" src="film.js"></script>
+</body>
+</html>

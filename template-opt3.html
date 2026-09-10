@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start an online store for free — Shopify (Option 3)</title>
+<meta name="description" content="Shopify is the all-in-one platform to build, run, and grow your online boutique.">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="heroes.css">
+</head>
+<body>
+
+<!-- ══ Header (L1) ══ Figma 50:15686 — page-container level, pinned to top edge.
+     Hero carries padding-top: var(--spacing-header-height) so content clears it. -->
+<header class="header" data-node-id="50:15686">
+  <nav class="header__nav" aria-label="Main">
+    <div class="header__main-nav">
+      <a class="header__logo" href="#" aria-label="Shopify">
+        <!-- Code Connect: ShopifyLogo monotone=False iconOnly=False -> sanctioned lockup, 126.05 x 36 -->
+        <img src="assets/shopify-logo.svg" alt="Shopify" width="126.0504" height="36">
+      </a>
+    </div>
+    <div class="header__secondary-nav">
+      <a class="btn btn--primary btn--lg" href="#">Start for free</a>
+    </div>
+  </nav>
+</header>
+
+<main class="page">
+
+  <!-- ══ Hero Floating Image ══ Figma 50:15630 -->
+  <section class="hero" data-node-id="50:15630">
+    <div class="hero__inner">
+
+      <!-- Content Column — Figma 50:15631 (w 618) -->
+      <div class="hero__content" data-node-id="50:15631">
+        <!-- Heading Group CTA — Figma 50:15632, Type=Email -->
+        <div class="heading-group-cta" data-node-id="50:15632">
+          <div class="heading-group">
+            <h1 class="t1">Start an online store for free</h1>
+            <p class="body-lg">Shopify is the all-in-one platform to build, run, and grow your online boutique. Start free, then get 3 months for $1/month</p>
+          </div>
+          <div class="cta">
+            <!-- Input Text Button — inline submit, XL-MD variant -->
+            <form class="input-text-button" action="#" method="get">
+              <label class="input-text-button__field">
+                <span class="visually-hidden">Email address</span>
+                <input type="email" name="email" placeholder="Enter your email address" autocomplete="email">
+              </label>
+              <button class="btn btn--primary btn--sm" type="submit">Start for free</button>
+            </form>
+            <p class="body-sm">You agree to receive Shopify marketing emails.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image Column — Figma 50:15633 (w 511) -->
+      <div class="hero__image" data-node-id="50:15633">
+        <!-- Hero image slot — hero-store-builder-food, Figma 74:43446 (Option 3 of "Motion Direction 1 ( New Visuals )", 74:42950).
+             An 840x630 library hero rendered into the 511 x 383.25 slot; heroes.css
+             scales it by exactly 511/840 and .stage__inner still carries
+             --stage-scale. The storefront box, product card and product artwork are
+             normalised (hv-nrm / hv-prod in heroes.css) so the three option tabs
+             agree; options.html keeps the Figma-verbatim geometry. -->
+        <div class="stage" data-node-id="74:43446">
+         <div class="stage__inner">
+          <div class="hero-viz hv-nrm hero-viz--opt3" data-node-id="74:43446">
+          <!-- grid — 74:xxxxx, gradient hairlines on exact pixel rows/columns -->
+          <img class="hv-grid-h" src="assets/heroes/shared/grid-h.svg" alt="">
+          <img class="hv-grid-v" src="assets/heroes/shared/grid-v.svg" alt="">
+
+          <!-- storefront screenshot, clipped to a 10px radius -->
+          <div class="hv-storefront"><img src="assets/heroes/opt3/storefront.jpg" alt=""></div>
+
+          <!-- slider pill: solid fill, dashed remainder, thumb -->
+          <div class="hv-slider">
+            <div class="hv-slider__solid"></div>
+            <div class="hv-slider__dashes"></div>
+            <div class="hv-slider__thumb"></div>
+          </div>
+
+          <!-- rich-text editor card -->
+          <div class="hv-editor">
+            <div class="hv-editor__head"></div>
+          <img class="hv-ic hv-ic--magic" src="assets/heroes/shared/icon-magic.svg" alt="">
+          <img class="hv-ic hv-ic--text" src="assets/heroes/shared/icon-text.svg" alt="">
+          <img class="hv-ic hv-ic--chevron" src="assets/heroes/shared/icon-chevron-down.svg" alt="">
+          <img class="hv-ic hv-ic--bold" src="assets/heroes/shared/icon-bold.svg" alt="">
+          <img class="hv-ic hv-ic--italic" src="assets/heroes/shared/icon-italic.svg" alt="">
+          <img class="hv-ic hv-ic--link" src="assets/heroes/shared/icon-link.svg" alt="">
+          <img class="hv-ic hv-ic--bulleted" src="assets/heroes/shared/icon-list-bulleted.svg" alt="">
+          <img class="hv-ic hv-ic--numbered" src="assets/heroes/shared/icon-list-numbered.svg" alt="">
+            <span class="hv-bar hv-bar--1"></span>
+            <span class="hv-bar hv-bar--2"></span>
+            <span class="hv-bar hv-bar--3"></span>
+          </div>
+
+          <!-- theme swatch pill -->
+          <div class="hv-swatch"><i></i><i></i><i></i><i></i><i></i></div>
+
+          <!-- product card: shadow / quantity stepper / add-to-cart -->
+          <div class="hv-card">
+            <img class="hv-card__shadow" src="assets/heroes/opt3/card-shadow.svg" alt="">
+            <div class="hv-card__amount">
+              <span class="hv-card__minus"></span>
+              <span class="hv-card__qty">1</span>
+              <span class="hv-card__plus"></span>
+            </div>
+            <div class="hv-card__btn"><img src="assets/heroes/shared/icon-cart.svg" alt=""></div>
+          </div>
+
+          <!-- products 74:43010 — 4 shadow/ellipse layers then bottle, pump, jar -->
+          <div class="hv-prod">
+            <img class="hv-p1" src="assets/heroes/opt3/prod-shadow-1.svg" alt="">
+            <img class="hv-p2" src="assets/heroes/opt3/prod-shadow-2.svg" alt="">
+            <img class="hv-p3" src="assets/heroes/opt3/prod-ellipse-1.svg" alt="">
+            <img class="hv-p4" src="assets/heroes/opt3/prod-ellipse-2.svg" alt="">
+            <img class="hv-p5" src="assets/heroes/opt3/prod-bottle.png" alt="">
+            <div class="hv-p6"><img src="assets/heroes/opt3/prod-pump.png" alt=""></div>
+            <img class="hv-p7" src="assets/heroes/opt3/prod-jar.png" alt="">
+          </div>
+          </div>
+         </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ Section: Logo Group Marquee ══ Figma 50:15635 -->
+  <section class="section" data-node-id="50:15635">
+    <!-- Section Heading — Figma 50:15636, Screen=LG Center=False Horizontal=False -->
+    <div class="section-heading" data-node-id="50:15636">
+      <div class="heading-group-cta heading-group-cta--narrow">
+        <div class="heading-group">
+          <h2 class="t5">Powering millions of businesses worldwide</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo Group Marquee — Figma 50:15637.
+         Motion replicated from shopify.com/zh/ppc/online-store:
+           duplicated tracks, each min-width:100%, animation: marquee-ltr <dur> linear infinite,
+           @keyframes marquee-ltr { 0% translateX(-100%) -> 100% translateX(0) }
+         marquee.js keeps <dur> at a constant 47.76 px/s to match the reference's cadence. -->
+    <div class="logo-marquee" id="logoMarquee" dir="ltr" role="group" aria-label="Brands powered by Shopify" data-node-id="50:15637">
+      <ul class="logo-track" data-marquee-track>
+        <li class="logo-cell"><img src="assets/logos/allbirds.svg" alt="Allbirds" style="left:14.2859%;top:23.65%;width:71.4283%;height:52.7066%"></li>
+        <li class="logo-cell"><img src="assets/logos/gymshark.svg" alt="Gymshark" style="left:7.5715%;top:33.8%;width:84.8570%;height:32.4000%"></li>
+        <li class="logo-cell"><img src="assets/logos/brooklinen.svg" alt="Brooklinen" style="left:11.1905%;top:35.0%;width:77.6190%;height:30.0000%"></li>
+        <li class="logo-cell"><img src="assets/logos/leesa.svg" alt="Leesa" style="left:20.0001%;top:31.21%;width:59.9999%;height:37.5836%"></li>
+        <li class="logo-cell"><img src="assets/logos/kylie.svg" alt="Kylie Cosmetics" style="left:24.7616%;top:26.44%;width:50.4768%;height:54.7330%"></li>
+        <li class="logo-cell"><img src="assets/logos/crate-and-barrel.svg" alt="Crate&amp;Barrel" style="left:7.3811%;top:36.11%;width:85.2379%;height:27.7778%"></li>
+        <li class="logo-cell"><img src="assets/logos/untuckit.svg" alt="UNTUCKit" style="left:7.1429%;top:36.07%;width:85.7141%;height:27.8669%"></li>
+        <li class="logo-cell"><img src="assets/logos/death-wish-coffee.svg" alt="Death Wish Coffee" style="left:30.2381%;top:3.89%;width:39.5238%;height:92.2224%"></li>
+        <li class="logo-cell"><img src="assets/logos/jungalow.svg" alt="Jungalow" style="left:-0.0008%;top:40.56%;width:100.0016%;height:18.8866%"></li>
+        <li class="logo-cell"><img src="assets/logos/rebecca-minkoff.svg" alt="Rebecca Minkoff" style="left:0.0000%;top:42.29%;width:100.0000%;height:15.4185%"></li>
+      </ul>
+      <ul class="logo-track" data-marquee-track aria-hidden="true">
+        <li class="logo-cell"><img src="assets/logos/allbirds.svg" alt="" style="left:14.2859%;top:23.65%;width:71.4283%;height:52.7066%"></li>
+        <li class="logo-cell"><img src="assets/logos/gymshark.svg" alt="" style="left:7.5715%;top:33.8%;width:84.8570%;height:32.4000%"></li>
+        <li class="logo-cell"><img src="assets/logos/brooklinen.svg" alt="" style="left:11.1905%;top:35.0%;width:77.6190%;height:30.0000%"></li>
+        <li class="logo-cell"><img src="assets/logos/leesa.svg" alt="" style="left:20.0001%;top:31.21%;width:59.9999%;height:37.5836%"></li>
+        <li class="logo-cell"><img src="assets/logos/kylie.svg" alt="" style="left:24.7616%;top:26.44%;width:50.4768%;height:54.7330%"></li>
+        <li class="logo-cell"><img src="assets/logos/crate-and-barrel.svg" alt="" style="left:7.3811%;top:36.11%;width:85.2379%;height:27.7778%"></li>
+        <li class="logo-cell"><img src="assets/logos/untuckit.svg" alt="" style="left:7.1429%;top:36.07%;width:85.7141%;height:27.8669%"></li>
+        <li class="logo-cell"><img src="assets/logos/death-wish-coffee.svg" alt="" style="left:30.2381%;top:3.89%;width:39.5238%;height:92.2224%"></li>
+        <li class="logo-cell"><img src="assets/logos/jungalow.svg" alt="" style="left:-0.0008%;top:40.56%;width:100.0016%;height:18.8866%"></li>
+        <li class="logo-cell"><img src="assets/logos/rebecca-minkoff.svg" alt="" style="left:0.0000%;top:42.29%;width:100.0000%;height:15.4185%"></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<script nonce="1cf4988eba603033eb1dd0b6cd4d952c" src="marquee.js"></script>
+</body>
+</html>

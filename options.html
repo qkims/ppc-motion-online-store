@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero visuals — Option 1-2-3</title>
+<!-- styles.css supplies the Shopify Inter face, the surface-1 token and the
+     box-sizing reset; heroes.css is the hero kit itself. -->
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="heroes.css">
+<style>
+  body { background: #fff; }
+  .opts {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+  .opts__intro h1 { font-size: 28px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.02em; }
+  .opts__intro p  { margin: 0; font-size: 14px; line-height: 20px; color: rgba(0,0,0,.6); }
+  .opt { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .opt__cap { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .opt__num  { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+  .opt__meta { font-size: 12px; line-height: 16px; color: rgba(0,0,0,.5); }
+  .opt__meta code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; }
+  /* Scale the 840px design down rather than reflow it — the heroes are
+     fixed-size Figma frames, so scaling is the only faithful response. */
+  @media (max-width: 887px) { .hero-stage { --s: calc((100vw - 48px) / 840); } }
+</style>
+</head>
+<body>
+
+<div class="opts">
+  <div class="opts__intro">
+    <h1>Hero visuals</h1>
+    <p>Motion Direction 1 ( New Visuals ) &mdash; Figma section 74:42950. Three 840&times;630 frames sharing one store-builder kit, numbered left to right as they sit on the canvas. 840&times;630 is this library&rsquo;s hero-image format, and the template&rsquo;s hero slot (50:15634) renders one at 511&nbsp;&times;&nbsp;383.25 &mdash; exactly 511/840 &mdash; so each of these drops straight into the page. See the Option&nbsp;1/2/3 tabs for that.</p>
+    <p style="margin-top:8px">The <code>hero-store-builder-*</code> name inside each frame is inherited from whichever component was duplicated as a starting point and does <em>not</em> describe its imagery &mdash; the frame named &ldquo;fashion&rdquo; holds the beauty visual and the one named &ldquo;health&rdquo; holds the fashion visual. The numbering above is canvas order, which is the only ordering the file actually asserts.</p>
+  </div>
+
+    <figure class="opt" id="option-1">
+      <figcaption class="opt__cap">
+        <span class="opt__num">Option 1</span>
+        <span class="opt__meta">Beauty — rotated tube cutout &middot; <code>hero-store-builder-fashion</code> &middot; 74:43445</span>
+      </figcaption>
+      <div class="hero-stage">
+        <div class="hero-viz hero-viz--opt1" data-node-id="74:43445">
+        <!-- grid — 74:xxxxx, gradient hairlines on exact pixel rows/columns -->
+        <img class="hv-grid-h" src="assets/heroes/shared/grid-h.svg" alt="">
+        <img class="hv-grid-v" src="assets/heroes/shared/grid-v.svg" alt="">
+
+        <!-- storefront screenshot, clipped to a 10px radius -->
+        <div class="hv-storefront"><img src="assets/heroes/opt1/storefront.jpg" alt=""></div>
+
+        <!-- slider pill: solid fill, dashed remainder, thumb -->
+        <div class="hv-slider">
+          <div class="hv-slider__solid"></div>
+          <div class="hv-slider__dashes"></div>
+          <div class="hv-slider__thumb"></div>
+        </div>
+
+        <!-- rich-text editor card -->
+        <div class="hv-editor">
+          <div class="hv-editor__head"></div>
+        <img class="hv-ic hv-ic--magic" src="assets/heroes/shared/icon-magic.svg" alt="">
+        <img class="hv-ic hv-ic--text" src="assets/heroes/shared/icon-text.svg" alt="">
+        <img class="hv-ic hv-ic--chevron" src="assets/heroes/shared/icon-chevron-down.svg" alt="">
+        <img class="hv-ic hv-ic--bold" src="assets/heroes/shared/icon-bold.svg" alt="">
+        <img class="hv-ic hv-ic--italic" src="assets/heroes/shared/icon-italic.svg" alt="">
+        <img class="hv-ic hv-ic--link" src="assets/heroes/shared/icon-link.svg" alt="">
+        <img class="hv-ic hv-ic--bulleted" src="assets/heroes/shared/icon-list-bulleted.svg" alt="">
+        <img class="hv-ic hv-ic--numbered" src="assets/heroes/shared/icon-list-numbered.svg" alt="">
+          <span class="hv-bar hv-bar--1"></span>
+          <span class="hv-bar hv-bar--2"></span>
+          <span class="hv-bar hv-bar--3"></span>
+        </div>
+
+        <!-- theme swatch pill -->
+        <div class="hv-swatch"><i></i><i></i><i></i><i></i><i></i></div>
+
+        <!-- product card: shadow / quantity stepper / add-to-cart -->
+        <div class="hv-card">
+          <img class="hv-card__shadow" src="assets/heroes/opt1/card-shadow.svg" alt="">
+          <div class="hv-card__amount">
+            <span class="hv-card__minus"></span>
+            <span class="hv-card__qty">1</span>
+            <span class="hv-card__plus"></span>
+          </div>
+          <div class="hv-card__btn"><img src="assets/heroes/shared/icon-cart.svg" alt=""></div>
+        </div>
+
+        <!-- cutout: mint tube, rotated -165deg -->
+        <img class="hv-cutout" src="assets/heroes/opt1/tube.png" alt="">
+        </div>
+      </div>
+    </figure>
+    <figure class="opt" id="option-2">
+      <figcaption class="opt__cap">
+        <span class="opt__num">Option 2</span>
+        <span class="opt__meta">Fashion — jacket cutout &middot; <code>hero-store-builder-health</code> &middot; 74:43447</span>
+      </figcaption>
+      <div class="hero-stage">
+        <div class="hero-viz hero-viz--opt2" data-node-id="74:43447">
+        <!-- grid — 74:xxxxx, gradient hairlines on exact pixel rows/columns -->
+        <img class="hv-grid-h" src="assets/heroes/shared/grid-h.svg" alt="">
+        <img class="hv-grid-v" src="assets/heroes/shared/grid-v.svg" alt="">
+
+        <!-- storefront screenshot, clipped to a 10px radius -->
+        <div class="hv-storefront"><img src="assets/heroes/opt2/storefront.jpg" alt=""></div>
+
+        <!-- slider pill: solid fill, dashed remainder, thumb -->
+        <div class="hv-slider">
+          <div class="hv-slider__solid"></div>
+          <div class="hv-slider__dashes"></div>
+          <div class="hv-slider__thumb"></div>
+        </div>
+
+        <!-- rich-text editor card -->
+        <div class="hv-editor">
+          <div class="hv-editor__head"></div>
+        <img class="hv-ic hv-ic--magic" src="assets/heroes/shared/icon-magic.svg" alt="">
+        <img class="hv-ic hv-ic--text" src="assets/heroes/shared/icon-text.svg" alt="">
+        <img class="hv-ic hv-ic--chevron" src="assets/heroes/shared/icon-chevron-down.svg" alt="">
+        <img class="hv-ic hv-ic--bold" src="assets/heroes/shared/icon-bold.svg" alt="">
+        <img class="hv-ic hv-ic--italic" src="assets/heroes/shared/icon-italic.svg" alt="">
+        <img class="hv-ic hv-ic--link" src="assets/heroes/shared/icon-link.svg" alt="">
+        <img class="hv-ic hv-ic--bulleted" src="assets/heroes/shared/icon-list-bulleted.svg" alt="">
+        <img class="hv-ic hv-ic--numbered" src="assets/heroes/shared/icon-list-numbered.svg" alt="">
+          <span class="hv-bar hv-bar--1"></span>
+          <span class="hv-bar hv-bar--2"></span>
+          <span class="hv-bar hv-bar--3"></span>
+        </div>
+
+        <!-- theme swatch pill -->
+        <div class="hv-swatch"><i></i><i></i><i></i><i></i><i></i></div>
+
+        <!-- product card: shadow / quantity stepper / add-to-cart -->
+        <div class="hv-card">
+          <img class="hv-card__shadow" src="assets/heroes/opt2/card-shadow.svg" alt="">
+          <div class="hv-card__amount">
+            <span class="hv-card__minus"></span>
+            <span class="hv-card__qty">1</span>
+            <span class="hv-card__plus"></span>
+          </div>
+          <div class="hv-card__btn"><img src="assets/heroes/shared/icon-cart.svg" alt=""></div>
+        </div>
+
+        <!-- cutout: jacket -->
+        <img class="hv-cutout" src="assets/heroes/opt2/jacket.png" alt="">
+        </div>
+      </div>
+    </figure>
+    <figure class="opt" id="option-3">
+      <figcaption class="opt__cap">
+        <span class="opt__num">Option 3</span>
+        <span class="opt__meta">Skincare — three-bottle product group &middot; <code>hero-store-builder-food</code> &middot; 74:43446</span>
+      </figcaption>
+      <div class="hero-stage">
+        <div class="hero-viz hero-viz--opt3" data-node-id="74:43446">
+        <!-- grid — 74:xxxxx, gradient hairlines on exact pixel rows/columns -->
+        <img class="hv-grid-h" src="assets/heroes/shared/grid-h.svg" alt="">
+        <img class="hv-grid-v" src="assets/heroes/shared/grid-v.svg" alt="">
+
+        <!-- storefront screenshot, clipped to a 10px radius -->
+        <div class="hv-storefront"><img src="assets/heroes/opt3/storefront.jpg" alt=""></div>
+
+        <!-- slider pill: solid fill, dashed remainder, thumb -->
+        <div class="hv-slider">
+          <div class="hv-slider__solid"></div>
+          <div class="hv-slider__dashes"></div>
+          <div class="hv-slider__thumb"></div>
+        </div>
+
+        <!-- rich-text editor card -->
+        <div class="hv-editor">
+          <div class="hv-editor__head"></div>
+        <img class="hv-ic hv-ic--magic" src="assets/heroes/shared/icon-magic.svg" alt="">
+        <img class="hv-ic hv-ic--text" src="assets/heroes/shared/icon-text.svg" alt="">
+        <img class="hv-ic hv-ic--chevron" src="assets/heroes/shared/icon-chevron-down.svg" alt="">
+        <img class="hv-ic hv-ic--bold" src="assets/heroes/shared/icon-bold.svg" alt="">
+        <img class="hv-ic hv-ic--italic" src="assets/heroes/shared/icon-italic.svg" alt="">
+        <img class="hv-ic hv-ic--link" src="assets/heroes/shared/icon-link.svg" alt="">
+        <img class="hv-ic hv-ic--bulleted" src="assets/heroes/shared/icon-list-bulleted.svg" alt="">
+        <img class="hv-ic hv-ic--numbered" src="assets/heroes/shared/icon-list-numbered.svg" alt="">
+          <span class="hv-bar hv-bar--1"></span>
+          <span class="hv-bar hv-bar--2"></span>
+          <span class="hv-bar hv-bar--3"></span>
+        </div>
+
+        <!-- theme swatch pill -->
+        <div class="hv-swatch"><i></i><i></i><i></i><i></i><i></i></div>
+
+        <!-- product card: shadow / quantity stepper / add-to-cart -->
+        <div class="hv-card">
+          <img class="hv-card__shadow" src="assets/heroes/opt3/card-shadow.svg" alt="">
+          <div class="hv-card__amount">
+            <span class="hv-card__minus"></span>
+            <span class="hv-card__qty">1</span>
+            <span class="hv-card__plus"></span>
+          </div>
+          <div class="hv-card__btn"><img src="assets/heroes/shared/icon-cart.svg" alt=""></div>
+        </div>
+
+        <!-- products 74:43010 — 4 shadow/ellipse layers then bottle, pump, jar -->
+        <img class="hv-p1" src="assets/heroes/opt3/prod-shadow-1.svg" alt="">
+        <img class="hv-p2" src="assets/heroes/opt3/prod-shadow-2.svg" alt="">
+        <img class="hv-p3" src="assets/heroes/opt3/prod-ellipse-1.svg" alt="">
+        <img class="hv-p4" src="assets/heroes/opt3/prod-ellipse-2.svg" alt="">
+        <img class="hv-p5" src="assets/heroes/opt3/prod-bottle.png" alt="">
+        <div class="hv-p6"><img src="assets/heroes/opt3/prod-pump.png" alt=""></div>
+        <img class="hv-p7" src="assets/heroes/opt3/prod-jar.png" alt="">
+        </div>
+      </div>
+    </figure>
+</div>
+
+</body>
+</html>

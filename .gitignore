@@ -1,0 +1,10 @@
+# Python bytecode from the .tools/ capture harness -- the .py files ARE tracked,
+# their caches are not.
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Raw capture intermediates, if the stills are ever regenerated in place.
+assets/stills/_raw/

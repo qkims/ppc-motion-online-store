@@ -1,0 +1,1006 @@
+/* ══ Product video ═══════════════════════════════════════════════════════════
+   The three product stills are replaced by alpha WebM renders of the same
+   products.  The stills stay in the DOM at `visibility: hidden` -- they keep
+   their boxes, which is the evidence test_template.py's Figma-verbatim geometry
+   table is measured against, and opt3's seven layers include the shadows and
+   ellipses the float render brings with it.
+
+   ROUND 36 SWAPPED ALL THREE AGAIN -- "lets update all add to cart renders with
+   these here" -- and this time the ask names the MOTION and not just the footage:
+   "rotate and turn and sit in position" twice, and "twist with some physics and
+   sit in positon" once.  Every mechanism the round-21 header below describes is
+   unchanged -- alpha, connectivity keying, the shed pass, the 2px ramp, the
+   un-blend -- and only the per-clip numbers moved.  Two things changed in kind.
+
+   NOTHING PING-PONGS ANY MORE, WHERE ROUND 30 PING-PONGED ALL THREE.  A ping-pong
+   plays its return leg backwards, so on this footage it would UN-SIT the object it
+   just sat down -- the settle would run in reverse and the product would climb back
+   into its own tumble.  A forward loop is no better: it knocks the object out of
+   position every 3.3s.  So each clip is one forward pass, which film.js plays ONCE
+   per panel visit and then PARKS on its final frame.  That is the answer given to
+   a direct question ("Once per panel visit, then hold"), and it RETIRES two earlier
+   requirements rather than working around them: round 16's "lets not have it stop
+   and loop in a loop" and round 31's never-parked fences.  Stopping is now the ask.
+
+   AND NO WINDOW STARTS AFTER A FADE, where round 30's all did.  Asserted, not
+   assumed, because a fade is the one defect a play-once clip cannot hide at its
+   head -- there is no second pass to cover it.  Re-measured for round 37's deeper
+   trims, since moving lo moves the frame this claim is about: at the first
+   DELIVERED frame the crop ring is 253 / 253 / 253 (modal, over all four edges) and
+   the product is at 38.2% / 37.0% / 29.2% of the crop under luma 200, against
+   window ranges of 17.2-38.2 / 20.9-37.2 / 29.2-37.1%.  A fade-in would put frame 0
+   near zero.  Round 36's frames 0 sat mid-range; round 37's are the window MAXIMUM
+   for opt1 and opt2 -- the fullest silhouette either clip shows -- because the trim
+   ate the narrow poses that came before.  opt3's is its window minimum, at 79% of
+   its own maximum, which is a turn continuing and not a fade beginning.  build.py
+   also asserts, on every delivered frame of every clip, that the crop border comes
+   out fully transparent and that the silhouette has not collapsed below 3% of the
+   crop; both fire per frame, not per clip.
+
+   THE CLIPS ARE MATCHED TO STORES BY PRODUCT CONTENT, which crosses positions 2
+   and 3 of the list as it was given -- and in round 36 that crossing was the
+   USER'S OWN CALL, not an inference.  Asked whether to take the list positionally
+   or by content, the answer was "By content -- swap my 2nd and 3rd".  So mrvup1n5
+   (the single mint PITCH tube) is Option 1's own product, 0gjoxtxy (the magenta
+   jacket) is Option 2's, and dt6pk7bn (the pair of apothecary bottles) is Option
+   3's.  Taken literally the list would have put bottles in the fashion store and a
+   jacket in the cosmetics store.  Mapping is one edit in /tmp/r21/build.py's CFG.
+
+   ROUND 21 SWAPPED ALL THREE SOURCES: "lets update the videos with these ones
+   instead and also remove the bg".  All three are now FLOATS, where the retired
+   set was two rotation renders and one float.  That is why no header below quotes
+   a turning point, an angular rate, a retiming grid or a frontal dwell any more:
+   rounds 17-19 spent themselves entirely on making one revolution turn evenly,
+   and there is no longer a revolution to equalise.
+
+   ALPHA IS THE WHOLE MECHANISM, not a convenience.  The sources are opaque h264
+   shot on a stage and there is no mix-blend-mode anywhere in this file, so an
+   opaque file does not composite -- it paints its own studio floor onto a white
+   card.  The delivered assets are VP9 with TAG:ALPHA_MODE=1.  (ffmpeg's native
+   vp9 decoder drops that alpha silently -- pix_fmt reports yuv420p and an rgba
+   extraction comes back opaque -- so anything measuring these files has to force
+   `-c:v libvpx-vp9`.)
+
+   KEYING IS CONNECTIVITY, AND ON THESE CLIPS THAT IS NOT A PREFERENCE -- NO
+   THRESHOLD EXISTS.  Inside opt3's crop the floor runs 217..236 while pixels on
+   the cream labels reach 219: the ranges OVERLAP, so no single luma cut can
+   separate a dark bottle from a mid-grey cast shadow, nor a light label from the
+   floor it is lighter than.  What separates product from floor is REACHABILITY.
+   The floor is the region a flood fill from the frame border reaches without
+   crossing the product; a label is a light region it cannot reach.  The first
+   attempt was a luma cut per clip and it failed both ways at once -- opaque
+   shadow blobs, and the card showing through the labels.
+
+   THE FLOOR IS NOT EVEN A CONSTANT.  Only opt3's frame 0 is flat white; from
+   frame 12 it is a vignette (corners 227/213/222/212, the top-right drifting
+   213 -> 193 across the clip), so one un-blend constant is wrong by up to 35
+   levels in a corner.  It is usable only INSIDE the crop, where the ring holds
+   217..236 -- which is why the crop is tight and not generous.
+
+   CAST SHADOWS ARE SHED SEPARATELY.  A baked shadow is floor -- border-reachable
+   -- but it fails the background test on value, so it is flooded as its own pass
+   from the pixels that touch the reachable floor.  The polarity is direction-
+   dependent and fails loudly if reversed: on a BRIGHT floor a shadow candidate is
+   a LIGHT pixel (v >= shed), on a DARK stage it is v <= shed.  Backwards, the
+   flood seeds on the product and eats it -- opt3's kept area fell 34% to 4.6%.
+
+   THE ALPHA RAMP IS RESTRICTED TO A 2px BAND INSIDE THE BOUNDARY, and that
+   restriction is what lets one number be right in two places at once.  A ramp
+   that saturates early marks a half-covered edge pixel fully opaque while it
+   still carries half a stage -- the dark outline the first opt1 attempt drew
+   round the tube.  A ramp wide enough to be coverage-accurate (0 -> 255 over luma
+   0..190) turns interior dark features into ghosts instead: the tube's own
+   letters sit at luma 117.  Applied only within 2px of the outside, it is
+   coverage where coverage is partial and fully opaque everywhere else.
+
+   UN-BLENDING TOUCHES ONLY THE ~1% WHERE ALPHA IS PARTIAL.  Over a stage of value
+   B a pixel reads a*C + (1-a)*B, which on the card is a(1-a)(B-C) too light --
+   about 47 levels of halo at a=0.5 for a dark jacket over a 248 sweep.  At a=255
+   the correction divides by one and at a=0 the colour is never sampled, so
+   out = (c*255 - (255-a)*BG) / max(a,1) runs on the boundary band alone.
+
+   REJECTED, both after rendering them: SATURATION as the shadow discriminator (a
+   neutral shadow on a neutral floor looks like the perfect test, and it did kill
+   all three shadows -- but the pump bottle's lit translucent shoulder is neutral,
+   light, and ON the silhouette, so the flood seeds from the floor and chews
+   through the bottle's base), and DILATING the shed (grow 2 and 3 both left the
+   sliver AND serrated the bottle bases; growing the other way erodes every
+   silhouette).  The surviving sliver was neither problem: component labelling
+   showed it is its OWN 144x18 region whose darkest pixel is 99, kept because
+   99 < the seed threshold of 120 -- not because it touched anything.  Seed 50
+   removed it with zero edge damage.  Four attempts at connectivity for what was
+   all along a threshold.
+
+   Per-clip constants, recorded here because /tmp does not survive a reboot.  All
+   three sources are 960x960, 97 frames, 4.042s at 24 fps, on the same near-uniform
+   bright sweep round 21 keyed against, so one set of polarities covers all three:
+
+     opt  crop w:h:x:y     window  fr  play  stage        light shed seed   ramp     BG
+     1    432:502:275:198  20..61  42  once  249 sweep     244  244   150  210..253  253
+     2    566:518:184:222  8..90   83  once  251 sweep     246  246   120   90..253  253
+     3    448:522:264:222  0..87   88  once  253 sweep     178  OFF    60   60..253  253
+
+   The "stage" column is the ring value at the first delivered frame.  It was flat
+   to the pixel on all three until ROUND 42 moved opt1's first frame from f34 to f0,
+   where the ring spans 252..255; ROUND 43 then moved it again to f20, where it spans
+   249..255.  The column carries the MINIMUM, so opt1 reads 249 and is the one entry
+   that is a floor rather than a flat -- and three consecutive rounds moving it is why
+   it is worth recording WHICH FRAME the number came from.  Over ALL delivered
+   frames the ring runs 249..255 / 233..255 / 248..255,
+   so opt1's minimum clears its own light of 244 by 5 and opt3's clears its 178 by
+   70 -- opt2's does not, and that single frame is accounted for below.  opt1's
+   figure read 244 until round 41 re-measured it: that was the PRE-ROUND-40 source,
+   and carrying it forward through a source swap left this table saying opt1 sat
+   exactly on its own threshold when it has five counts of margin.  Re-measured on
+   the pipeline's own Rec.601 grey (a max-channel reading gives 250 and is a
+   DIFFERENT metric, which is worth knowing before the two get compared); the
+   minimum was at f34, the first frame of the round-41 window, which is why that
+   window change moved it not at all.  ROUND 42's wider window put the minimum at
+   f11, and ROUND 43's trim -- which excludes f11 -- puts it back onto its own first
+   frame, f20.  Through all three the range is UNCHANGED at 249..255: the +5 clearance
+   is a property of the sweep and not of which frames are delivered, which is the whole
+   reason widening the crop, lengthening the window and then trimming it again all
+   needed no re-key.  THE MIN FRAME STILL HAS TO BE RE-MEASURED ON EVERY WINDOW CHANGE
+   EVEN THOUGH THE RANGE DOES NOT MOVE, because it is the "stage" column's source and
+   f11 fell outside f20..f61.
+
+   opt1 and opt2 keep round 21's polarity and ramp shape outright.  TWO ENTRIES IN
+   THAT TABLE ARE NOT DEFAULTS AND BOTH ARE MEASURED.
+
+   opt3's light is 178, far below the 244/246 the other two use, and the shed pass
+   is OFF.  Its floor is the brightest of the three (ring 248..255) but its bottles
+   are pale, and an invasion detector -- count silhouette pixels removed whose grey
+   is <= 150 -- settles it: at light 178, 1.917% of the crop is removed and the
+   invasion count is 0; at 170 it is 2.192% and 407 pixels of BOTTLE are eaten at
+   f40; at 254 the flood collapses and 99.77% of the frame comes out opaque.  So the
+   threshold has a floor and a ceiling and 178 sits between them, verified by looking
+   at the render as well as the counter.  shed is written as 256 rather than 255 or
+   None because NO BYTE SATISFIES v >= 256 -- the pass is provably empty rather than
+   merely unlikely to fire, which is the difference between an off switch and a
+   needle that can never fire reading as coverage.
+
+   opt2's BG is 253 while its measured ring is 251, a 2-level error applied to the
+   ~1.4% of pixels where alpha is partial -- about 2 levels of colour error at a = 0.5
+   and 6 at a = 0.25.  Left as is; it is below the crf-42 noise it is embedded in.  Recorded
+   because the number looks like it was measured and it was inherited.
+   AND THE PARAGRAPH THAT USED TO SIT HERE WAS AN INHERITED NUMBER, DELETED IN ROUND
+   37.  It said opt2's crop was "4px tight on the left, on exactly one frame: at
+   cache f48 (source f56) four border pixels read 233, below its own light of 246,
+   where a motion-blurred sleeve grazes the edge", and it read as measured because it
+   carried a frame index and a level.  It is not true of this footage.  Every border
+   pixel of all 97 frames of the 566x518 crop was swept, all four edges, gray and
+   per-channel: the gray minimum is 250 (source f42) and the lowest single channel is
+   247 (source f5, outside the delivered window entirely).  Nothing comes within four
+   levels of light=246, let alone thirteen.  The number belonged to the RETIRED round
+   30/35 opt2 crop -- 468:468:275:245, a different source and a different rectangle,
+   listed below -- and it survived the round-36 swap unre-measured.  This is the
+   project's own lesson landing on its own notes: a figure that looks measured is
+   only measured against the artefact it was taken from, and a source swap
+   invalidates every one of them.
+
+   Retired values, for the previous (round 30/35) delivery:
+     1  520:768:208:100  14..87 pong    2  468:468:275:245  104..192 pong    3  632:620:179:143  78..240 pong  190 140 50 55..222 222
+
+   ROUND 40 PROVENANCE -- opt2 AND opt3 ARE THE PREVIOUS BUILD'S OWN BYTES, NOT
+   REBUILDS: "we should keep the animation as is so bring me back the previous build
+   for the 2nd and third but just make revisions for the first one".  The working
+   directory had been deleted and was rebuilt from Chrome's HTTP cache, where media
+   is stored as SPARSE `_s` siblings (range records, 32-byte headers, magic derived
+   from the first record rather than hardcoded) and NOT in the `_0` entry, which for
+   a video holds only ~3.6KB of response headers.  opt3's clip was first reported
+   lost; that was wrong, and the reason is worth keeping: the recovery index had
+   been written with a 20-byte cache header when the real one is 24, so every key
+   was truncated by four characters and a search for ".webm" matched nothing.  A
+   raw-byte scan of all 9 Cache_Data directories for the literal key found it.
+   THE EXTRACTOR WAS PROVEN BEFORE IT WAS TRUSTED: run against opt2, whose correct
+   bytes were already on disk, it reproduced all 139625 of them (md5 identical), and
+   only then was opt3 extracted -- 4 ranges, 56856 B, no gaps, valid EBML, 46 frames
+   at 448x522 with alpha_mode=1, matching both the recorded 448:522 crop and the
+   46 frames implied by this file's own "1.917s of clip".  opt2 was never touched.
+
+   Encoded libvpx-vp9 -pix_fmt yuva420p -auto-alt-ref 0 -b:v 0 -crf 42, all three at
+   24 fps -- round 33's 4 fps presentation of opt3 is gone with the clip it retimed.
+   Plus -g 600 on ALL THREE now, not just opt2, because film.js seeks all three.
+
+   CRF 42 IS INHERITED, AND THE FILE-SIZE WIN IS NOT THE ENCODER.  The three come
+   to 550.3 KB against the retired delivery's 1133.8 KB -- 51.5% lighter, on a page
+   whose LCP was raised as a concern -- and that is 61% FEWER OUTPUT FRAMES (250
+   against 646, because nothing ping-pongs) times 35% FEWER PIXELS PER FRAME
+   (657,564 against 1,010,224, because these crops are tight).  Bits per frame
+   actually went UP.  Round 30's crf sweep still stands as the reason the quality
+   is not at risk: 38 / 42 / 46 were rendered at the painted size and compared
+   2x-zoomed side by side, and they were indistinguishable, because the element
+   paints at well under the encoded resolution -- see the painted-size line under
+   each option below.  Two dead ends, so they are not retried: hqdn3d cuts opt1 by
+   41% but HAS NO ALPHA-CAPABLE PIXEL FORMAT, so ffmpeg silently inserts rgba ->
+   yuv420p and the file comes out FULLY OPAQUE while still carrying alpha_mode=1
+   (the tag is not evidence of alpha -- build.py decodes the channel back and
+   requires it to still be a mask).  Denoising the colour planes alone, through
+   alphaextract/alphamerge, saves 6%.  And downscaling at constant crf saves
+   15-20%, not the 70% the pixel count suggests, because crf is quality PER PIXEL
+   and lanczos softens the hard mask into a ramp that costs more per pixel than the
+   edge it replaced.
+
+   PLACEMENT IS RE-SOLVED IN ROUND 36, AND THE PINS WERE RE-MEASURED OFF THE
+   OUTGOING FILES RATHER THAN READ OUT OF THIS FILE.  The three quantities held are
+   still round 21's -- ink height, mean centre x, and the lowest row the ink ever
+   reaches -- and scale, left and top still fall out of them.  What changed is where
+   the target numbers come from: the values recorded here MIXED CONVENTIONS (some
+   union-of-all-frames, some per-frame mean) accumulated over five source swaps, so
+   they were discarded and the retired product{1,2,3}.webm were decoded and measured
+   directly, at alpha >= 128, one definition for both sides of the swap:
+
+     opt1  ink height 182.26   mean cx 687.630   lowest row 247.755
+     opt2  ink height 176.706  mean cx 683.022   lowest row 285.938
+     opt3  ink height 189.944  mean cx 686.003   lowest row 287.030
+
+   THE THREE PINS DO NOT ALL USE ONE CONVENTION, AND THAT IS DELIBERATE -- stated
+   here because mixed conventions are what got the old numbers discarded.  Height and
+   centre x are the retired clip's PER-FRAME MEAN; the lowest row is its UNION, the
+   deepest row it ever reached.  Height has to be a mean: the union height of a
+   floating object is its extent plus its whole bob, which overstates how tall the
+   product is (opt1: 200.02 union against 182.26 mean, a 9.7% difference in scale).
+   The foot has to be the union because "the lowest row it ever reaches" is the
+   quantity this record has pinned since round 21, and changing the target convention
+   in the same round as the footage would make any visible shift unattributable.
+   WHAT THAT COSTS, measured on the retired files rather than estimated -- per-frame
+   mean lowest row against the union, in card px:
+     opt1  mean 239.911  union 247.755  so the new tube parks 7.84px lower
+     opt2  mean 283.395  union 285.938  2.54px lower
+     opt3  mean 281.835  union 287.030  5.20px lower
+   All three therefore sit slightly lower on the card than the retired products did
+   ON AVERAGE, and exactly where they did AT THEIR LOWEST.  For an object that now
+   parks rather than floats that is the better of the two -- planted, not hovering --
+   but it is 7.84px of downward shift on opt1 and it is a taste call, so it is here
+   in numbers and not buried in a solve.  Switching to the mean is one edit per
+   record in product-place.json plus a re-fit.
+
+   THE PIN FRAME IS THE SETTLED POSE, NOT FRAME 0.  These clips end parked, so the
+   held last frame is what is on screen longest -- 0.71s / 0.54s / 1.13s of dead
+   stillness per visit, against 3.3-3.7s of motion -- and it is the frame the eye
+   composes against.  Pinning frame 0 would have placed a mid-tumble pose and let
+   the resting one land wherever it fell.
+
+   OPT3 NOW PINS HEIGHT, WHICH REVERSES ROUND 22 -- and it reverses it on round 22's
+   own reason.  Round 22 switched opt3 from height to width because "the cosmetic
+   bottles are pretty big, we need to scale this down a bit"; on THIS footage the
+   width pin is the one that makes it big.  All three counterfactuals were computed
+   rather than argued:
+
+     opt   width-pin scale  settled h  ink top y  tumble w in a 240px card
+     1     0.545085         263.82     -16.07     133.55
+     2     0.427051         188.76      97.18     234.45  (spills 4.05 left)
+     3     0.724151         364.25     -77.22     311.38  (spills 32.8 / 38.6)
+
+   At a width pin opt1's and opt3's settled ink starts ABOVE THE TOP OF THE HERO
+   PANEL (y < 0), and opt2's and opt3's tumbles leave the card.  The height pin
+   keeps all three wholly inside it.  So height is not a preference here; it is the
+   only one of the two that is not broken.
+
+   HOLDING HEIGHT COSTS WIDTH, AND ON TWO OF THREE IT COSTS A LOT -- REPORTED, NOT
+   HIDDEN.  Settled on-card ink width against the retired mean: 79.83 vs 115.56
+   (-30.9%), 147.52 vs 157.58 (-6.4%), 102.71 vs 196.97 (-47.9%).  That is the
+   footage and not the fit.  These renders are TALL AND NARROW AT REST where the
+   round-30 floats were wide -- opt3 in particular is TWO bottles standing close
+   together where the retired clip was a spread cluster of THREE -- and with height
+   and aspect both fixed, width is the degree of freedom three pins do not hold.
+   The products will read narrower than last round at the same height.  The queued
+   "for all three website templates - lets scale this up a bit" ask is the place to
+   revisit it, because scaling the stage moves all three together and this does not.
+
+   CONTAINMENT, measured over every frame of the full tumble rather than at rest,
+   inside a card that runs x 566..806:
+     opt1  x 647.83..728.74  margins 81.8 / 77.3   dips  7.83px below its resting foot
+     opt2  x 569.68..789.17  margins  3.7 / 16.8   dips 12.39px below its resting foot
+     opt3  x 606.32..768.70  margins 40.3 / 37.3   dips  1.89px below its resting foot
+   Nothing spills horizontally.  ALL THREE now dip, and every dip is real and
+   deliberate: the object swings low through its move and comes back up to sit, so
+   pinning the RESTING foot means the mid-move silhouette passes below it.  opt1's
+   7.83px arrived in round 41 and is the one dip that is NOT a swing -- its clip now
+   ENDS mid-float, so its deepest ink is its FIRST frame rather than its last.  Pinning the
+   lowest row of the whole clip instead would lift the resting jacket 12px off the
+   card floor, which is worse -- the rest pose is the one that has to look planted.
+
+   WHO LINKS THIS FILE, since round 19 made it the difference between the two sides
+   of the comparison rather than a global: template-anim.html and template-build.html
+   only.  The three Option tabs and template-still.html deliberately do NOT, which is
+   what makes them stills -- "we need to have option 1 2 3 all static images.  for
+   animation."  Dropping the <video> is not enough on its own and the polarity is easy
+   to get backwards: the rule immediately below hides everything in .hv-prod that is
+   NOT the video, so a page with this stylesheet and no video renders a BLANK card.
+   Unlinking it also gives those pages back the foot shadows heroes.css authored per
+   option (heroes.css 504-506) and un-hides .hv-card__shadow, which is right -- the
+   fitted gradients below were derived FROM the video frames and describe a product
+   that is moving.
+   ────────────────────────────────────────────────────────────────────────────*/
+.hv-prod > :not(.hv-vid) { visibility: hidden }
+
+.hv-vid {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+
+/* FRAME NUMBERS BELOW ARE SOURCE INDICES.  The delivered file's frame i is source
+   frame lo + i, so opt2's cache f0 is source f50; where a cache index is meant it
+   says so.  Motion figures are per-frame sum of |diff| OVER THE CROP, never over
+   the 960x960 frame: a whole-frame mean divides the product's own motion by about
+   15 and makes every settle look a full second earlier than it is.  That error is
+   how round 36 nearly shipped opt1 cut at f72, which is HALF ITS PEAK MOTION. */
+
+/* Option 1 — tube, 260x502, 28 frames of source 34..61 at 24 fps = 1.167s, played
+   ONCE per panel visit and parked on its last frame.  Source: lets_have_the_bottle
+   _rotate_the_other_way_around_and_turn_and_sit_in_position_h64ccozcg8sbxoms6bzg_1,
+   960x960, 97 frames, 4.042s at exactly 24/1; crop at (367,198).
+
+   ROUND 40 REVERSED THE SPIN, AND IT IS A SOURCE SWAP, NOT A TRANSFORM: "the bottle
+   direction has not been reversed for the first cosmetic -- please use this render
+   here".  A mirror was rejected in round 38 because the settled label reads front and
+   upright, so mirroring would have printed PITCH backwards; this render turns the
+   other way in camera and keeps the label correct.  Verified on pixels, not by eye:
+   the orange label centroid RISES through the clip (120.77 -> 128.57 over f0..18,
+   then 112.14 -> 119.64 over f42..66) where the retired source FELL (172.2 -> 114.8).
+
+   EVERY NUMBER BELOW WAS RE-DERIVED, because this file's own rule is that a figure is
+   only true of the artefact it was taken from.  Two supplied files were compared and
+   the 97-frame master was taken over the 66-frame Desktop trim: the trim is exactly
+   master[33:97] re-encoded (mean MAD 0.002) at a VFR ~23.31 fps, so the master
+   reproduces the user's chosen content at the recorded 24/1 with first-generation
+   pixels.  Their cut at f33 lands one frame off this pipeline's own lo.
+
+   THE CROP HAD TO MOVE AND ONLY THE TOP EDGE FORCED IT.  Through the retired
+   260:502:367:225 the new tube tips to y204 during the turn -- 21px above the crop --
+   and the border grey falls to 154 on 30 of the window's frames against a light of
+   244.  Ink union over the window is x385..573 y204..693, so 260x502 still holds it
+   with 12px of vertical slack; y went 225 -> 198 to centre that slack and the crop
+   SIZE is unchanged, which is what keeps `box = crop x scale` exact.  367,204 also
+   contains the union and still dirties four frames: THE RING IS THE TEST, NOT THE
+   BBOX.  Ring over all 28 delivered frames is 249..255, clearing light=244 by 5
+   where the retired clip landed exactly on it.  The shed pass added 0 px on every
+   frame, which is what shed == light means and is now measured rather than assumed.
+
+   ROUND 41 CUT THE SIT: "lets cut off the part where the bottle slides down to sit?
+   Lets just have the bottle float and stop playing before it slides down."  hi went
+   74 -> 61, lo stays 34, so the clip is 28 frames / 1.167s where it was 41 / 1.708s.
+   THE SLIDE IS A THREE-FRAME EVENT AND THE KNEE IS UNAMBIGUOUS.  The settled foot row
+   (alpha>=128, measured IN THE CROP) steps +1,+1,+1 per frame through f61 and +2
+   through f65, then +5 at f66, +12 at f67, +32 at f68, and freezes at 495 from f69
+   all the way to f96.  So f67..f69 IS the sit, and f69..f96 is 28 frames of dead
+   hold: the retired window carried the whole descent plus five frames of nothing.
+
+   f61 IS THE CUT BECAUSE TWO INDEPENDENT LANDMARKS MEET THERE.  The turn FINISHES at
+   f61 -- silhouette width reaches its final value and stops growing.  This paragraph
+   first recorded that as "122 at the edge-on f38, 183 by f58, 185 from f61 on"; round
+   42 re-measured the same source frames off the delivered bytes and gets 121 / 182 /
+   183-from-f59, in BOTH crops.  The old figures came from a mixed matte-and-decode
+   reading and are 1-2px wide; the landmark itself holds either way.  f61 is also the
+   LAST frame still
+   drifting at only 1 crop px, i.e. 0.435 CSS px per frame.  Both matter because the
+   clip HOLDS its last frame for 2.833s: freezing 0.435px/frame is invisible, where
+   f66 would freeze 2.03 CSS px/frame and read as a stall mid-fall.  Cutting EARLIER
+   was rejected on the same test -- the float apex is f55, where velocity is ~0, but
+   the tube is only 97% turned there and would park visibly off-square.
+
+   WHAT ROUND 40 MEASURED IS STILL TRUE AND IS NOW UNUSED, AND IT WAS MEASURED IN THE
+   CROP.  Crop motion
+   (pixels changed by >2) runs f70=15426, f72=7891, f73=5565, then f74=111 against a
+   noise floor of 42..305 across the remaining 23 source frames -- a 50x cliff -- so
+   f74 was the first frame AT the floor, so the tube ARRIVED rather than being cut
+   off -- the right stop for a clip that sits, and the wrong one for a clip that must
+   not.  The difference between round 40 and round 41 is the ask, not the measurement.
+   The bbox is bit-identical at crop x19..203 y77..495 from f72 through f96.  A
+   WHOLE-FRAME metric was tried first and is the trap this file already warns about;
+   here it happened to agree, which is only knowable by checking both.  lo stays 34:
+   the label-blind run on this source is ~f20..f40, so the clip still opens on the
+   tube's plain back.  Frame 0's silhouette is 38.07% against a window range of
+   26.55..44.14 -- mid-range, a turn continuing, not a fade beginning.
+
+   IT FITS L1's DWELL WITH MORE ROOM THAN BEFORE: layer 1's kit is open from 11.950s
+   to 3.150s of the 12.8s film -- the one window that WRAPS the loop -- which is
+   4.00s, so 1.167s of clip leaves 2.833s parked and genuinely motionless.
+
+   THE THREE PINS DID THE WORK.  Height, mean centre x and union lowest row are
+   unchanged targets, so the settled foot lands at 247.755 and the centre at 687.630
+   on BOTH files -- measured 0.000px apart off the two delivered webms with one
+   definition, and the retired file re-decoded to the x8..219 y12..495 recorded above,
+   which is a known-answer test on the instrument.  What the swap cost is width: this
+   render's settled tube is 185x419 crop px where the retired one was 212x484, so
+   holding height pins scale UP to 0.434988067 (from 0.376567149) and the box to
+   113.097 x 218.364.  Settled ink lands 80.47 x 182.26 card px -- 0.8% WIDER than the
+   retired clip, the first source swap in this project that did not cost width.
+
+   ROUND 41 MOVED ONE NUMBER, AND MEASUREMENT IS WHY IT IS ONLY ONE.  f61's settled
+   alpha bbox is f74's in every dimension except height off the crop floor: 419 crop
+   px tall on both, centre x 111.5 on both.  So the height pin gives the SAME scale
+   0.434988067, the same 113.097 x 218.364 box and the same left 639.1288 -- `top`
+   alone moves, 32.0009 -> 57.6652, which is exactly the 59 crop rows (25.664 card px)
+   between the two feet.  The resting foot still lands on 247.7550 against a target of
+   247.755, measured off the delivered webm.  THE COINCIDENCE THAT BROKE IS THE ONE
+   WORTH NAMING: for a clip that ends sitting, the resting foot IS the deepest ink, so
+   "union lowest row" and "resting foot" were the same target and this record never
+   had to choose between them.  A clip that ends mid-float separates them -- the
+   deepest ink is now frame 0, 7.83 card px lower -- and the placement stays pinned to
+   the RESTING foot, on the same reasoning the containment note above already gives
+   for opt2 and opt3: the rest pose is the one that has to look planted.
+
+   THE ONE FITTED ELLIPSE DID NOT NEED REFITTING, AND THAT IS A MEASUREMENT AND NOT AN
+   ASSUMPTION.  All three quantities a clip is allowed to set were re-derived off the
+   new delivered file at the recorded 16px-up flatten offset: contact width 110 -> 109
+   crop px (-0.435 card, -0.9%), contact centre +0.217 card px, and cy unchanged
+   BECAUSE the resting foot is pinned.  Every move is under a quarter of a pixel on an
+   ellipse of 26.023 x 3.426 whose peak darkening is 19 of 255 -- finer than round 40
+   itself reported to -- so the numbers below are left alone.  NOTE THE LITERAL RULE
+   `cy = lowest reach EVER + DROP` WOULD NOW PUSH cy 7.83px DOWN, off the tube
+   altogether; it is deliberately not applied, because opt1 is the contact branch
+   (recorded h=1.36, and the fit asserts h < 2 iff opt1) and its ellipse is a contact
+   patch that cannot be anywhere the tube is not.  Settled ink measures 79.60 x 182.26
+   card px against round 40's 80.47 -- 1.1% narrower.  THIS PARAGRAPH FIRST BLAMED THE
+   LOSSY ALPHA EDGE AT THRESHOLD 128, claiming the matte gives 185 crop px for f61 and
+   f74 alike and the two differ only after the encoder.  ROUND 42 DISPROVED THAT: its
+   build's decoded f61 bbox is x112..294, EXACTLY its own matte's, so the encoder
+   erodes the edge by nothing at all.  Re-decoded side by side, the two delivered
+   files give f74 x19..203 (185) against f61 x20..202 (183) -- the tube is STILL
+   TURNING about 1 crop px per side between f61 and f74, and the 0.87 card px is
+   pose.  What makes the reversal safe rather than a second guess is that two builds
+   at different crop widths agree on f61 to the pixel (x20..202 in both, after the
+   92px shift), which is a known-answer test on the instrument.  Across the 28 frames
+   they share, 3 differ by exactly 1px -- lossy alpha does wobble, just not on the
+   frame the placement is solved from.  fit_product_shadow.py itself is
+   still lost with the rest of .tools/, so the three figures above are ratio
+   reconstructions against the delivered bytes, not that script re-run.
+
+   ROUND 42 PUT THE TURN BACK, AND THE FIRST THING TO SETTLE WAS WHAT "BACK" MEANT:
+   "theres no turning with the tube animation, lets include back the turning."  Round
+   41 had cut hi 74 -> 61, and THAT CUT REMOVED NO ROTATION -- source f62..f74 hold a
+   constant silhouette of 185/186 crop px, so the stretch it removed is purely the
+   slide down.  The turning being asked for was lost EARLIER, by "Feel free to shave
+   off a few seconds in the beginning", which set lo = 34 and with it discarded the
+   source's entire tumble.  So round 42 extends lo 34 -> 0 and LEAVES hi at 61: the
+   turn comes back, the slide stays cut, and both instructions hold at once.  62
+   frames, 2.583s.  Reading the instruction against the pixels rather than against the
+   most recent change is the whole of this round's diagnosis.
+
+   WHY lo WAS EVER 34 IS A HARD CONSTRAINT, NOT TASTE, AND IT IS WHY THIS ROUND HAS TO
+   RE-CROP.  Full-frame ink bbox (ffmpeg bbox at luma<244 -- a superset that includes
+   the baked cast shadow, which is exactly right for safe crop sizing) against the
+   260-wide crop box x367..626 shows the tumbling tube LEAVING THE CROP ON BOTH SIDES
+   from f6 to f30, by up to L89 / R77, peaking at f23 where it needs x279..703: 426 px
+   against 260.  The tumble is unrepresentable in the old crop, so any window
+   containing it must widen.  Vertically nothing changes -- union y204..681 sits inside
+   the existing y198..699 -- and that is what makes the rest of the solve a no-op.
+
+   THE WIDENING IS FREE AT THE FRONT, WHICH IS WHY THE ROUND TAKES THE WHOLE TURN AND
+   NOT A TRIM OF IT.  The union is IDENTICAL for lo = 0, 3, 6, 12 and 20, because the
+   widest frame f23 belongs to all of them -- so starting at f0 costs exactly what
+   starting at f20 costs, and a cautious trim would buy nothing but a shorter turn.
+   Crop went 260:502:367:198 -> 432:502:275:198: 3px of margin each side, even
+   dimensions, CH and CY deliberately untouched.  Four candidate widths (432, 436, 440,
+   448) were ring-tested and ALL FOUR returned a ring minimum of 249, +5 over
+   light=244, identical to the old crop -- so the tightest one works, and the ring is a
+   global property of the sweep rather than a proximity effect.
+
+   HOLDING CY AND CH FIXED IS WHAT REDUCES THE SOLVE TO TWO NUMBERS, AND THE RESULT IS
+   SELF-PROVING.  The settled frame is the same source f61 as round 41, and its bbox is
+   unchanged in y (18..436, h=419) and unchanged in centre (203.5, which is 111.5 plus
+   the 92px shift), so the height pin returns the same scale 0.434988067, the same
+   box_h 218.364 and THE SAME top 57.6652.  Only two numbers move: width
+   113.097 -> 187.9148 because the crop grew, and left 639.1288 -> 599.1099 because the
+   same centre sits in a wider box.  The proof is downstream: settled ink lands on
+   647.83..727.43 card px and the resting foot on 247.7550 against its 247.755 pin, so
+   the tube's rendered size and resting position are untouched and only the transparent
+   canvas around it grew.  `left` depending only on the settled centre and not on the
+   settled width is what makes a 172px crop change cost one subtraction.
+
+   THE TURN IS NOW VISIBLE IN THE NUMBERS, WHICH IS THE CHECK ROUND 41 DID NOT HAVE.
+   That round justified its cut on silhouette width, which is a weak proxy for
+   rotation, and across its 28 delivered frames the width only ever ran 184 -> 121 ->
+   183.  Across round 42's 62 frames, measured off the delivered webm, it runs 237 at
+   f0 -> 424 at f23 (broadside) -> 121 at f38 (edge-on) -> 183 from f59: a 3.5x swing.
+   Contact sheets were read alongside the tables, and they agree -- the tube starts
+   tilted label-front, tips to edge-on around f20..f27, comes back up on its plain back
+   f30..f37, reveals the label f38..f50, and settles f50..f61.  A CONTACT SHEET IS THE
+   INSTRUMENT THAT FOUND THIS ROUND'S BUG: the tables said the clip was fine, and three
+   sheets side by side showed round 41's turn crammed into its first seven frames with
+   fourteen near-identical frames after it.
+
+   NOTHING IS CLIPPED, AND THAT IS MEASURED ON THE DELIVERED FILE RATHER THAN ON THE
+   MATTE.  Union over all 62 decoded frames is x3..427 y7..482 -- margins L3 R4 T7 B19,
+   every one positive.  Border-opaque count is 0 on all 62 frames, the shed pass added
+   0 px (which is what shed == light means), and the minimum silhouette is 15.30%
+   against a 2% floor.
+
+   ROUND 43 TRIMMED THE RUN-UP, AND AN ANGLE MEASUREMENT IS WHAT MADE THAT SAFE: "Can
+   we trim off the first few second of the tube rotation and just leave the last few
+   seconds?"  THIS IS THE SAME SHAPE OF INSTRUCTION THAT PRODUCED ROUND 41, and round
+   41 is the window the user then rejected as having no turning -- so the question was
+   never "how much to cut" but "where does the turning actually live".  Silhouette
+   width cannot answer that and had already misled round 41 once.  The instrument is
+   the PRINCIPAL AXIS of the alpha mask: second moments per frame,
+   theta = 0.5*atan2(2*u11, u20-u02), unwrapped across the pi-periodic axis ambiguity
+   into a continuous curve.  Measured on the delivered round-42 file it shows the
+   rotation is heavily front-loaded -- f0..f61 sweeps 174.9 deg, of which f34..f61,
+   round 41's ENTIRE window, contributes 9.9.
+
+   THAT IS THE CALIBRATION THIS PROJECT NOW HAS, AND IT COST A ROUND TO GET: 9.9 deg
+   over 1.167s = 8.5 deg/s reads as STATIC to the person who asked for turning, and
+   174.9 deg over 2.583s = 67.7 deg/s reads as TURNING.  Two labelled points, from real
+   verdicts rather than taste, so any future trim can be priced before it ships.
+
+   f20 IS THE CUT, AND EVERY COMPETING CANDIDATE WAS PRICED FIRST.  Holding hi at 61,
+   the sweep against lo runs 174.9 (lo=0), 131.9 (18), 120.3 (20), 87.1 (24), 35.6 (28),
+   14.7 (30), 9.9 (34).  There is a CLIFF between lo=24 and lo=30, because f24..f30 is
+   where the tube swings through horizontal at up to 14.6 deg/frame.  BE PRECISE ABOUT
+   WHY lo=20 IS A GOOD TRADE, BECAUSE IT IS NOT THAT THE TRIMMED PART IS STILL: f0..f19
+   averages 2.74 deg/frame against the kept window's 2.86, so it is only marginally the
+   slower half, and the honest headline is 68.7 deg/s delivered against 67.7 -- a 1.5%
+   density gain, not a transformation.  What makes f20 right is perceptual and is
+   measured two ways: the whole swing through horizontal sits inside the kept window
+   (peak 14.6 deg/frame at f27..f28), and the width swing is 3.50x, IDENTICAL to round
+   42 against round 41's 1.52x -- so the full silhouette drama survives a cut of a
+   third of the running time.  What goes is 0.833s of the tube leaning while still
+   recognisably upright; the clip now OPENS just short of broadside.
+
+   THE TRIM COST NOTHING IN GEOMETRY, AND THAT IS A CONSEQUENCE OF THE ROUND-42 CROP
+   RATHER THAN LUCK.  The crop is unchanged at 432:502:275:198 because the widest frame
+   is f23 (424 px) and f23 SURVIVES the trim -- the same fact behind round 42's note
+   that the union is identical for every lo <= 23.  Trimming FURTHER would eventually
+   pay off (lo=28 needs only 279 px and would roughly halve the file) but lands in the
+   35.6 deg regime next door to the one already rejected, so it was offered and not
+   taken.  The settled frame is still f61 and its decoded bbox is still x112..294
+   y18..436, so scale 0.434988067, width 187.9148, height 218.364, left 599.1099 and
+   top 57.6652 all carry over UNCHANGED -- re-derived, not assumed, and identical to
+   the digit.  The poster is the strongest form of that proof: rebuilt from scratch by
+   the round-43 builder it came out BYTE-IDENTICAL to round 42's (78289 B, md5
+   74b10e3c6f771ab426d28e87c5747e69), which is a known-answer test that the settled
+   pose, the crop and the adaptive PNG filter selection are all untouched.  SO THE
+   ROUND INSTALLS EXACTLY ONE FILE.  The ellipse needs no refit for the same reason,
+   and for the third round running the literal `cy = lowest reach EVER + DROP` is
+   deliberately not applied: the deepest ink is still f28, 20.01 card px below the
+   resting foot, and opt1 is the contact branch.
+
+   WHAT DID MOVE IS SMALL AND IS MEASURED ON THE DELIVERED FILE.  Union ink over the 42
+   decoded frames is x4..427 y7..482 -- margins L4 R4 T7 B19, all positive, nothing
+   clipped -- against round 42's x3..427, so the card-space span narrows by 0.44px on
+   the left only.  The last five frames move 0.06 deg/frame, so the clip still freezes
+   on a genuinely still pose, which is what the 2.25s hold needs.  Duration 1.750s in a
+   4.00s window leaves 2.250s parked, up from 1.417s.
+
+   PAINTED SIZE is now ~75.7 x 146.1 CSS px, DERIVED AND NOT MEASURED: round 37
+   measured 65.504 x 126.471 through both ancestor scales and the box grew 1.15517x.
+   That is 29.1% of the 260x502 crop against round 37's 25.2%, so even a 3x display
+   asks for 87% of the encoded pixels.  Still under-sampled, which is what keeps crf
+   42 free -- but the margin is thinner than it was and a further scale-up spends it.
+   Re-measure through getBoundingClientRect before trusting this line.
+
+   THE UPRIGHT-PITCH PROPERTY SURVIVED THE SWAP, re-verified on this source and not
+   inherited: the settled pose has the label front and upright.  The glyphs are AI
+   gibberish in the user's own render and illegible at painted size, left alone.
+
+   Full tumble x 600.85..785.28 inside a card of 566..806 (margins 34.8 / 20.7 -- the
+   round-43 trim narrowed the union by 0.44px on the left and nothing on the right), and
+   the deepest ink of the whole clip is f28, 20.01 card px below the resting foot --
+   round 40's window ended sitting so its deepest ink dipped 0.00, and round 41's
+   float-only window dipped 7.83 at its own first frame.  20.01 is now the largest dip
+   of the three clips (opt2 12.39, opt3 1.89) and it still sits inside the painted box:
+   the box bottom is top + box_h = 276.03 card px against the deepest ink's 267.76.
+   Round 40's ellipse was re-solved from the contact band of both delivered files:
+   contact width 41.046 -> 43.064 card px (+4.92%), contact centre
+   -1.000px, so x-radius 24.804 -> 26.023 and centre x 121.609 -> 120.609.  y-radius
+   and centre y are untouched BECAUSE the foot row is pinned.  That is a larger move
+   than round 37's 0.38px, as expected: that was a head trim on one source, this is a
+   different render.
+
+   PAYLOAD: round 40 took webm 49322 -> 45625 B and poster 53256 -> 72941 B, a net
+   +15988 B; ROUND 41's cut then took webm 45625 -> 34147 B (-25.2%, on 13 fewer
+   frames) and poster 72941 -> 74950 B, a net -9469 B.  The poster is the settled
+   frame written from the RAW RGBA the encoder was fed, with adaptive PNG row filters
+   (-20.5% against no filtering); it is f61 now rather than f74 and covers 44.14% of
+   the crop against 44.3%.  It grew 2009 B despite the smaller silhouette -- PNG size
+   follows entropy and not coverage, and the cause was not chased.
+
+   ROUND 42 IS THE EXPENSIVE ROUND, AND IT IS RECORDED AS A COST RATHER THAN BURIED:
+   webm 34147 -> 97521 B (+63374, +186%) and poster 74950 -> 78289 B (+3339), a net
+   +66713 B, and +57244 B against what round 40 actually shipped.  Two multipliers
+   stack -- 62 frames where there were 28, on a crop 66% larger in area -- and neither
+   is avoidable if the tumble is in the clip at all, because f23 alone forces the
+   width.  For scale it is still only the second-largest of the three: opt2's webm is
+   139625 B.  crf stays 42, on the under-sampling argument below, which the wider crop
+   strengthens rather than weakens.
+
+   ROUND 43's trim then took webm 97521 -> 61804 B (-36.6%, on 20 fewer frames) and left
+   the poster BYTE-IDENTICAL at 78289 B, a net -35717 B.  Measured against ROUND 41 --
+   the last window before the turn came back -- the STANDING COST OF HAVING A REAL TURN
+   AT ALL is +27657 B of webm (+81%) and +3339 B of poster, +30996 B in total.  That is
+   what f23 costs: the 432-wide crop it forces cannot be avoided while the tube tips
+   through horizontal, and no trim that keeps the tumble can recover it. */
+.hero-viz--opt1 .hv-vid {
+  left: 599.1099px; top: 57.6652px;
+  width: 187.9148px; height: 218.364px;
+}
+
+/* Option 2 — jacket, 566x518, 41 frames of source 50..90 at 24 fps = 1.708s, played
+   ONCE and parked.  Source: lets_have_the_jacket_twist_with_some_physics_and_sit_in
+   _positon__0gjoxtxy, 960x960, 97 frames, 4.042s; crop at (184,222).
+
+   ROUND 37: THE HEAD TRIM IS NOW FOR MOTION, AND THIS IS THE CLIP IT MATTERS MOST
+   ON.  Round 36 dropped f0..f7 purely for LENGTH (the full 97 frames run 4.042s
+   against L2's 4.00s dwell, so the clip would have been carried off stage instead of
+   parking) and kept f8 because it is the front-facing pose the twist starts from.
+   Round 37 -- "can we have the items just rotate once and hold in position?" -- drops
+   f8..f49 as well, and the reason is that THIS SOURCE IS THE ONE THAT GENUINELY
+   ROTATES MORE THAN ONCE.  Read off a 49-frame contact sheet: front f0..f14, side
+   f28..f30, BACK f36, narrow f42..f44, BACK AGAIN f48..f54, side f62..f66, front from
+   f70, still from f84.  A body that reaches the back, swings forward, and reaches the
+   back again is over-rotating and coming back -- which is what "with some physics" in
+   the filename buys and what the ask is about.  lo=50 opens on the SECOND back-facing
+   pose, so the swing is discarded outright and what ships is one monotonic turn into
+   position: 1.750s off the head, and the hold goes 0.542s -> 2.292s.
+
+   The other two sources were checked the same way and do NOT over-rotate; their
+   trims are for hold length alone.  opt1's orange label is measurably absent for
+   exactly one run of frames (0 orange px, f17..f45) and opt3's dark-bottle mass has
+   exactly one cycle, so each turns once.  Silhouette width cannot answer this -- a
+   2-fold-symmetric object shows two width cycles per revolution -- which is why the
+   count is taken from a colour signature and a contact sheet, not from the profile.
+
+   THE TAIL IS WHERE THE INHERITED NUMBERS WERE WRONG AND THE FIX COST 0.125s.  Its
+   motion floor is 32..268 and it crosses that floor at source f87 (146) -- but THE
+   FLOOR CROSSING IS NOT THE STOP.  At an f87 cut the hem's lowest ink row was still
+   descending a crop pixel per frame (456 -> 477 over source f68..f79, about 9.6
+   card px/s of jacket still falling) and the trailing bbox-stable run was 3 frames.
+   Extended to f90 it stops at source f86 and holds f86..f90 with a bit-identical
+   bbox.  The cost is 0.125s of parked hold -- at round 37's lo=50 that is 2.417 ->
+   2.292s, where round 36 paid it out of a far thinner 0.667 -> 0.542s.  This is the
+   second time in one round that a motion floor read as a settle; the hem is the
+   evidence.  hi is frozen at f90 for round 37: only lo moved, because the settled
+   pose is what this file's placement and all four fitted shadows are solved against.
+
+   FILM.JS NOW DRIVES ALL THREE, WHERE ROUND 20 BUILT IT FOR THIS CLIP ALONE.  The
+   machinery is unchanged in kind -- one rAF loop tapping the bd-slide-2 animation's
+   clock, one track per layer -- and the single-track special case is gone from
+   gen_template_variants.py with it.
+
+   WHAT ROUND 37 GIVES UP, SAID OUT LOUD: round 36 could claim that round 20's premise
+   ("lets start the animation with the jacket turned front and then have it rotate
+   once its in place") had finally become literally true of the footage, because f8 is
+   front-on.  At lo=50 it is not: the clip opens on the jacket's hood.  The two asks
+   are in direct conflict -- the front-facing pose IS the beginning, and the beginning
+   is what round 37 asked to shave -- and the newer, more explicit instruction wins.
+   film.js's header carries the same note against its own copy of the decision.
+
+   PAINTED SIZE, MEASURED: 151.382 x 138.545 CSS px on template-build.html at a
+   1600px viewport -- 26.7% of the 566x518 crop, so a 3x display asks 80.2% of the
+   encoded pixels.  The largest ratio of the three, and still under 1:1.
+
+   scale 0.399787104; box = crop x scale.  Settled ink 147.52 x 176.71 card px, the
+   closest of the three to what it replaced (width -6.4%).  Full tumble x 569.68..
+   789.17 inside a card of 566..806 -- margins 3.7 and 16.8, the tightest of the
+   three -- and the hem passes 12.39 card px BELOW the resting foot mid-twist, which
+   is deliberate; see CONTAINMENT in the header. */
+.hero-viz--opt2 .hv-vid {
+  left: 566.4843px; top: 94.8399px;
+  width: 226.280px; height: 207.090px;
+}
+
+/* Option 3 — bottles, 448x522, 46 frames of source 42..87 at 24 fps = 1.917s, played
+   ONCE and parked, MIRRORED.  Source: lets_have_the_bottles_rotate_and_turn_and_sit
+   _in_position_dt6pk7bn, 960x960, 97 frames, 4.042s; crop at (264,222), hflip.
+
+   ROUND 38 TURNS THIS CLIP THE OTHER WAY: "last one also rotating bottle from the
+   right to left but want it to rotate from left to right".  The observation was right
+   and it is measured -- the label patches inside the alpha sweep crop x 259.9 -> 206.5
+   across the delivered window, monotonically, and after the flip they sweep 187.3 ->
+   240.3, which is 447 minus the old pair at both ends.
+     THE FLIP IS AN hflip IN build.py, BEFORE THE MATTE, and not a CSS
+   `transform: scaleX(-1)` on .hv-vid.  A transform would have been one line and would
+   have been wrong in a way that only shows up later: fit_product_shadow.py measures
+   the DECODED FILE, so it would have gone on fitting two shadows to the unmirrored
+   silhouette and quietly put the wide one under the narrow bottle.  Mirroring at the
+   encode means one mirrored plane feeds the matte, the RGBA, the webm, the poster, the
+   crop cache and the shadow re-fit, so every number downstream re-derives instead of
+   disagreeing.  Keying survives it untouched because `light`, `shed` and `seed` are
+   luma thresholds and not positions (matte.py: `v <= seed`).
+     THE TWO FITTED SHADOWS THEREFORE SWAP, and that is the only visible consequence
+   besides the direction: the wide 60.1px footprint moves from card x 143.997 to 99.660
+   and the 45.2px one from 90.486 to 153.160.  Both are the exact mirror of their
+   partner about card x 121.907 -- which is the crop centre plus the .hv-prod nudge --
+   agreeing to 0.08px, and the whole residual is the -0.16 crop px by which the
+   re-encode and the asymmetric valley cut move a measured band centre.
+     THE PLACEMENT IS DELIBERATELY NOT RE-SOLVED.  A mirror moves the product inside a
+   fixed crop rect, so holding the all-frames mean centre would have dropped L by
+   5.31px.  It is not held, because these clips PARK: with L unchanged the resting pose
+   -- what the card shows for 2.883s of a 4.800s visit -- moves 1.30px, where
+   re-solving would have moved it 3.80px.  product-place.json carries the arithmetic.
+   Nothing about opt1 changed; its wordmark is legible and a mirror would reverse it.
+
+   TWO BOTTLES, WHERE EVERY PREVIOUS OPTION-3 SOURCE HAD THREE.  That is the single
+   biggest visible change in round 36 and it is the footage, not the crop: the pair
+   stands close together and the settled group measures 102.71 card px across
+   against the retired cluster's 196.97, a 47.9% narrower product at the same ink
+   height.  fit_product_shadow.py's REF3 drops from three object centres to two, and
+   its two-valley search becomes one.  test_anim.py's "Option 3's three shadows are
+   three, not one smudge" fence is now a two-shadow fence for the same reason.
+
+   THE SPLIT IS MEASURED AND THE FIRST MEASUREMENT WAS WRONG.  Over the settled
+   frames the summed column profile has one interior valley, and round 38's mirror
+   moved it from crop x201 to x246 -- 448 minus 201, to within the one pixel the
+   tie-break and the re-encode can move it.  At the valley 991 ink pixels sit between
+   neighbours of 6647 and 3655 six pixels either side, so it is a true valley and not
+   a gap.  The first search ever run returned x352 -- the crop's own right EDGE, at
+   ink 7 -- because it took the global minimum of the profile instead of a valley
+   inside it.  A GLOBAL MINIMUM IS NOT A VALLEY; the search is now bracketed 20px
+   inside the ink span.  REF3 is 170.500 and 306.000 crop px, and the two settled
+   object centres land at page x 666.400 and 719.900 with footprints 60.131 and
+   45.159.
+     ROUND 38 RE-MEASURED THIS PARAGRAPH AND THREE OF ITS NUMBERS WERE STALE, which
+   is worth recording because they read exactly like measurements: it said the valley
+   was at x202 holding 421 ink against 3643 and 6647, and the centres were "card x
+   657.68 and 708.85 with widths 46.07 and 57.02".  Re-derived against the file the
+   fitter actually reads, the pre-mirror clip gave x201 / 945 / 3656 / 6647 and
+   657.226 / 710.737 with footprints 45.026 and 61.508.  Only one of the six figures
+   survived.  They were not invented -- they are what round 36 measured before a later
+   re-fit moved the placement -- and that is the whole point: A FIGURE IS ONLY TRUE OF
+   THE ARTEFACT IT WAS TAKEN FROM, so a paragraph that is not re-derived on a swap
+   decays into confident fiction.
+
+   THE WINDOW END IS THE FLOOR AND THE FLOOR IS DEEP HERE.  Crop motion runs down
+   f74=692, f82=174, f86=83, f87=24 against a noise floor of 17..40, so f87 is the
+   floor and hi is frozen there: the settled pose is what this file's placement and
+   all four fitted shadows are solved against, and trimming the tail would move the
+   thing every other number is measured from.  The bbox agrees exactly over the last
+   3 frames and is stable within a pixel over the last 17, the widest settled window
+   of the three.  Round 38 pinned down what that sentence is a measurement OF, because
+   it used to say "bit-identical" and the bytes are nothing of the kind -- build.py
+   asserts no two delivered frames are equal, so no adjacent pair ever was.  It is the
+   BBOX that repeats, on the pre-encode matte plane at half alpha: crop x84..366
+   y7..509 mirrored (x81..363 before), agreeing over the last 3.  Read off the
+   DELIVERED webm instead, which is what the shadow fitter measures, the numbers are
+   x84..367 y5..510 and they agree over the last 4.
+
+   ROUND 37 MOVED THE HEAD, AND THIS CLIP TURNS ONCE EITHER WAY.  Round 36 opened at
+   f0 because crop motion peaks at 25503 on f8 -- the pair is already turning at the
+   first frame, so there was no dead head to drop for length.  "Can we have the items
+   just rotate once and hold in position?" is a different question, and the answer for
+   this source is that it ALREADY rotated exactly once: the dark-bottle mass has one
+   cycle across the 97 frames, no return swing (contrast opt2, which reaches the back
+   twice).  So the 42 frames off the head buy HOLD, not correctness -- 1.750s of it.
+   L3's kit is open 7.150 -> 11.950, 4.80s, so 1.917s of clip now parks for 2.883s:
+   60% of the visit dead still, the longest hold of the three on the clip that needed
+   the trim least.
+
+   ITS KEYING IS THE ONE THAT MOVED, and the evidence is in the header's constants
+   note: light 178 with the shed pass provably off, bracketed by an invasion counter
+   at 170 (407 bottle pixels eaten) and a collapse at 254.  Labels come through
+   fully intact with no cast shadow and no invasion, confirmed by rendering the
+   matte over grey and looking at it.  The B-shaped label glyphs are AI artefacts of
+   the source render, illegible at painted size, untouched.
+
+   PAINTED SIZE, MEASURED: 113.184 x 131.876 CSS px on template-build.html at a
+   1600px viewport -- 25.3% of the 448x522 crop, so a 3x display asks 75.8% of the
+   encoded pixels.
+
+   scale 0.377622465; box = crop x scale.  Settled ink 102.71 x 189.94 card px.
+   Full tumble x 606.32..768.70 inside a card of 566..806, margins 40.3 and 37.3,
+   dipping 1.89 card px below the resting foot at its lowest. */
+.hero-viz--opt3 .hv-vid {
+  left: 604.0592px; top: 94.4425px;
+  width: 169.175px; height: 197.119px;
+}
+
+/* ---------------------------------------------------------------------------
+   Product shadow — one per OBJECT, shaped by what that object is doing.
+
+   Round 16: "lets remove the default shadow from the UI and create something that
+   matches each of the items."  The default was one shape for all three: a 6px
+   #525252 ellipse at .6 with blur(2px), sized by a single ratio R = 0.634280 taken
+   off opt1 and applied to the other two.  It could not match anything, because the
+   three designs are not three views of one product --
+
+     opt1  a squeeze tube STANDING on its cap: in contact, and the only one that is.
+     opt2  a ghost-mannequin jacket HANGING in the air, arms out, touching nothing.
+     opt3  THREE separate objects at three heights -- jar, pump bottle, tall
+           cylinder.  One ellipse spanning all three was the most visible symptom
+           of the shared rule.
+
+   Round 16 read those five heights off the clips, as the peak-to-peak wander of
+   each object's lowest ink over its loop (0.28 / 31.31 / 17.96 / 25.84 / 42.92px),
+   and that reading is what ROUND 30 RETIRED.  It was never height; it was BOB
+   AMPLITUDE, standing in for height because on those sources the two happened to
+   agree.  Round 21 said so explicitly and named the failure to watch for.  Round
+   30's clips are the failure, in both directions at once:
+
+     retired -> shipped -> now      opt1  0.28 ->  1.36 -> 18.80
+                                    opt2 31.31 ->  8.36 ->  4.51
+                                    opt3 17.96 -> 18.17 ->  2.43
+                                         25.84 -> 17.79 ->  6.81
+                                         42.92 -> 16.63 ->  2.43
+
+   The tube that touches the card now bobs further than everything that floats above
+   it, because all three sources are "very subtle floating" renders and amplitude has
+   become a property of the render rather than of the object.  Run unchanged the model
+   painted the tube a 33x9px pool across the stepper's white face and gave the hanging
+   jacket the heaviest, hardest-cored shadow of the five.
+
+   HEIGHT OFF THE CARD IS NOT IN THESE CLIPS AT ALL.  They are shot floating against
+   a backdrop with no floor in frame; how far above the card an object sits is fixed
+   by where its video box was placed, which is a composition decision -- taken in
+   rounds 16, 17, 19, 21 and 22, rendered, and signed off.  So the five heights are
+   now RECORDED, in fit_product_shadow.py's HEIGHT table, at the values the approved
+   shadows were fitted on (1.36 / 8.36 / 18.17 / 17.79 / 16.63), and they are the only
+   quantities in the fit that a clip swap does not move.  The clip still sets each
+   shadow's WIDTH, its CENTRE and its BOTTOM, all three of which genuinely changed:
+   opt3's three feet widened 63.70/42.06/54.24 -> 73.02/47.28/58.06 card px and its
+   ellipses moved 3.2 / 0.9 / -1.4px sideways.  Amplitude is still measured and still
+   printed -- it is the number that tells you a RECORDED height has gone stale, and it
+   cannot do that job while it is also the thing being checked.  Two candidates were
+   rendered on the real card and looked at before this one was kept; the re-derived
+   one is the wider, greyer wash over the stepper in /tmp, and the difference on opt1
+   is not subtle.
+
+   -- so each object is measured on two of its own quantities and given its own
+   shadow.  FOOTPRINT: how wide it is where it comes closest to the floor, taken
+   where the width profile above its lowest row FLATTENS.  Not the silhouette
+   (opt1's tube leans, so its outline is 91.5px against a 47px cap) and not the
+   touching line (0.4px on a domed base).  Detected rather than chosen -- opt1
+   flattens 16px up, opt2 10px, opt3's three at 4px.  HEIGHT h: how far that object
+   sits off the card, recorded per object -- see above for why it is no longer read
+   off the loop.
+
+   One soft overhead light, half-angle 26.57 degrees (tan = 1/2), turns the two into
+   a shadow:
+
+       rx    = fp/2 + h*tan             the penumbra, h*tan on each side
+       ry    = rx*(2*RY/fp) + h/4       the object's own aspect, opened up by a
+                                        quarter of the hover
+       core  = max(0, .55 - h/40)       the solid middle, gone once it hovers
+       alpha = OP * fp/(fp + h) * s     the same light over a wider band, times a
+                                        per-option weight s (1 unless stated)
+       cy    = that object's lowest reach EVER + DROP, so the shadow never rides
+               up through the product
+       cx    = that object's own mean centre
+
+   RY, DROP, OP and the paint stay contact-shadow.json's.  opt1 lands at .5965 of
+   #525252 -- within a thousandth of the .6 the design authored -- because opt1 is
+   the case the design authored FOR; the further an item floats, the wider, softer
+   and lighter its shadow gets, down to .3262 for the cylinder that floats highest.
+
+   THE ONE WEIGHT THAT IS NOT DERIVED is opt3's, s = 0.70, from round 19: "can we
+   make the shadow a bit more subtle on the last item? - cosmetic bottles?"  It is a
+   named factor in fit_product_shadow.py and not an edit to the numbers below,
+   because those numbers are GENERATED and `--check` re-derives them -- a hand-edit
+   would read as drift and fail the gate that exists to catch it.  It scales both
+   stops of each gradient, so the falloff shape is untouched and only the weight
+   moves: peak darkening on white (173 * alpha, the paint being #525252) goes from
+   80.9 / 65.3 / 56.4 to 56.7 / 45.7 / 39.5 of 255.  That keeps the ladder intact --
+   still above opt1's ambient 34.2, still below opt2's 85.2 -- so opt3 remains the
+   most grounded of the three, which is what a cluster of objects sitting on a card
+   should be, only less of it.
+
+   Painted as radial-gradients on ONE pseudo covering the card rather than as
+   blurred ellipse boxes, for three reasons that all matter: opt3 needs three
+   shadows and an element has only ::before and ::after; a gradient's falloff IS the
+   softness, so no filter is involved and nothing bleeds past the card; and the
+   alpha lives in the colour stops, so five shadows carry five weights under one
+   rule.  `inset: 0` rather than the card's 240x262 in px -- the gradient
+   coordinates are absolute anyway, and this cannot fall out of step with heroes.css.
+
+   THE FLOOR ENDS AT THE STEPPER.  Every quantity above is derived against an empty
+   floor, where `cy = the object's lowest reach EVER + DROP` is right: it keeps the
+   shadow from riding up through the product.  The card is not empty -- heroes.css
+   puts the stepper's top edge at 135 of the card's 262 -- and the three items swing
+   6..14px PAST that edge over their loops, so four of the five shadows were landing
+   on the white face of a control: 44% of the stepper's interior darkened, peaking
+   at 81 of 255.  That reads as dirt on the UI, not as light.  So a shadow that
+   would cross the edge is laid ON it, cy = 135 - ry, and only cy moves: rx is what
+   matches the item's width, and ry is where the hover lives.  Flattening to the
+   resting aspect rx*(2RY/fp) was tried and rejected on the render -- at 23.8:1 the
+   jacket reads as standing on the card, and opt3's three thin bottom-aligned
+   ellipses merge into the one band this round set out to replace.
+
+   THE CLAMP IS FOR FLOATING OBJECTS, AND ROUND 17 HAD TO SAY SO OUT LOUD.  It used
+   to read here that "opt1 is untouched by construction: its tube is in contact, so
+   it bottoms out at 117.7 and never reaches 135" -- true only in the space the fit
+   was computing in, which was the wrong one (see the nudge, below).  In the space
+   the products are actually DRAWN in, all five feet are past 135, so the clamp
+   fires for all five and blindly it would pin all five shadows to the stepper's top
+   edge.  For the four that HOVER 18..43px that is exactly right: the object floats,
+   what it casts lands on the ground plane, and the stepper's top edge IS the ground
+   plane.  For opt1 it is a contradiction -- its tube TOUCHES, so the shadow is the
+   contact patch and cannot be anywhere the tube is not.  Clamped, it sat 12.6px above
+   the cap it belongs under.  So the clamp is gated on height, and the fit asserts the
+   split (h < 2 iff opt1) so it cannot silently stop matching if the assets change.
+   WHICH IT DID, AND THE ASSERTION IS WHY ROUND 30 NOTICED: three clips swapped
+   underneath it and opt1's measured amplitude came back 18.80px, putting the one
+   object in contact on the floating branch.  The gate is now on the recorded height,
+   so what it guards is a composition decision rather than a re-measurement.
+   AND THE UNCLAMPED SHADOW IS ON THE STEPPER ANYWAY -- worth stating plainly because
+   fit_product_shadow.py claimed the opposite for three rounds.  opt1's ellipse sits
+   at cy 143.23 with ry 3.43, i.e. 139.8..146.7 against a stepper edge at 135, so all
+   of it lies on the control's face; it is 4.7px of ink at alpha 0.1098 under a cap
+   that overlaps the stepper by design, and on the glass card of round 30 it reads as
+   nothing at all.  Re-derived from the new amplitude it would have been 2.6x taller
+   and 1.4x wider, which is visible, and that is the concrete cost of the model change
+   above rather than an argument from principle.
+
+   THE NUDGE: WHERE THE PRODUCT IS, NOT WHERE THE RECORD SAYS.  Every shadow before
+   round 17 was placed from product-place.json's L/T alone -- but heroes.css then
+   translates .hv-prod per layer, to align the three products' ink centroids on
+   their per-axis median, and that translate is part of where the object IS.
+   Measured in the browser, the rendered video box minus the record equals that
+   translate to within 0.01px: opt1 (+0.00, +29.97), opt2 (+6.76, -0.01), opt3
+   (-0.75, -4.64).  opt1's 30px in y is why opt1 was the one reported as weird: its
+   shadow was drawn across the tube's BODY, ~28px above the foot, so it showed as a
+   dark dash beside the object rather than a shadow under it.  The fit now reads
+   --tcx/--tcy minus each layer's --pcx/--pcy out of heroes.css rather than carrying
+   a copy, so the two cannot drift.  Fixing it moved opt2 +6.77px in x and opt3
+   -0.74px in x; neither changes shape or weight, and both move TOWARD their object.
+
+   AND FOR opt1, EVERY QUANTITY IS NOW A FOOT QUANTITY.  fp was always measured at
+   the foot and cx was always the whole silhouette's centre; on opt1 those disagree
+   by 23px, because its tube's left edge is pinned while its right edge sweeps 35px
+   through the air, dragging the extent centre right along with a body that is
+   nowhere near the card.  The first round-17 attempt used the silhouette (95.88
+   wide, centred 121.84) and on the render that put a broad pool to the LEFT of the
+   cap with nothing above most of it.  The contact patch is 47.09 wide and its centre
+   wanders 0.82px over the whole loop, so opt1 is fp/fcx: ellipse 24.26 x 3.43 at
+   (88.21, 143.23), peak 19 of 255 since round 31, area-mean about 6.  Subtle, and
+   underneath.
+
+   ROUND 31 COLLAPSED THE FIVE WEIGHTS INTO ONE.  "The merchant items have all
+   different shadows underneath - can we make this consistent and also make the
+   shadows very subtle."  Everything above answers round 16 -- a shadow that MATCHES
+   each item -- and round 31 wants five that match EACH OTHER, which is a real
+   conflict with a clean resolution: SIZE stays per object (rx off that object's own
+   footprint, ry the same aspect rule at that width and hover, so 24.3 / 80.5 / 46.2
+   / 32.6 / 38.3), and WEIGHT and FALLOFF become one number and one shape (alpha
+   0.1098, core 0, everywhere).  The five went from 34 / 98 / 58 / 53 / 57 of 255 to
+   19 / 19 / 19 / 19 / 19, and from cores of 0 / 34.1 / 9.6 / 10.5 / 13.4% to none.
+   The umbra mattered more than the table suggests: at one alpha a flat plateau reads
+   DARKER than the ramp around it, so a hard core beside a pure feathered wash is
+   most of what "all different shadows" was naming.
+   19 of 255 IS THE GENERIC SHADOW'S OWN PEAK -- card-shadow.svg, the one-size-fits-
+   all blob round 16 replaced for not matching anything, and the one shadow in this
+   project nobody ever called weird.  Round 17 recorded it as "the other end of the
+   dial, one number away" from the total-ink anchor it took instead; round 31 takes
+   it, and not on taste: total ink is an area integral, so it solves to a different
+   alpha for every footprint, and five ellipses spanning 5.1x in area would come back
+   with five weights -- the thing being removed.  A peak is ellipse-independent.
+   WHAT THIS GIVES UP: the shadows no longer say how high each object floats.  The
+   jacket at 8px and the cylinder at 17px now differ only in the softness ry buys.
+   The cross-option ladder alpha ~ 1/(1 + h/fp) is gone with it, and the per-object
+   measurement now lives entirely in the geometry, rx = fp/2 + h*tan.
+   WHAT IT DOES NOT TOUCH: placement.  The four that hover are still centred on the
+   whole object and laid on the stepper's top edge; opt1 is still on its FOOT centre
+   and still exempt from that clamp.  Round 31 did not ask about where the shadows
+   are, and round 17 recorded what a 12.6px error there looks like.
+
+   Derived by .tools/fit_product_shadow.py; --check proves this file still says what
+   it derived.  opt2's ::before is the STILL's second cuff ellipse and stays
+   suppressed.
+
+   .hv-card__shadow is the ONE generic shadow left: card-shadow.svg, 72x5 at every
+   item's foot, 16..18 of 255, the same width whatever is standing on it.  That is
+   the "default shadow" this round replaces, so it is hidden -- with `visibility`,
+   never `display`, because it is also a flex child of the card's column and taking
+   it out of flow lifts the stepper 9px and breaks the alignment across the three
+   options.  Scoped to .hv-nrm, so options.html keeps the Figma-verbatim reference.
+   --------------------------------------------------------------------------- */
+.hero-viz--opt2.hv-nrm .hv-card::before { content: none; }   /* the still's upper cuff: gone */
+.hv-nrm .hv-card__shadow { visibility: hidden; }   /* the generic 72x5: replaced */
+.hero-viz--opt1.hv-nrm .hv-card::after {
+  content: ""; inset: 0; width: auto; height: auto;
+  border-radius: 0; opacity: 1; filter: none;
+  background: radial-gradient(ellipse 26.023px 3.426px at 120.609px 142.961px, rgba(82, 82, 82, 0.1098) 0%, rgba(82, 82, 82, 0) 100%);
+}
+.hero-viz--opt2.hv-nrm .hv-card::after {
+  content: ""; inset: 0; width: auto; height: auto;
+  border-radius: 0; opacity: 1; filter: none;
+  background: radial-gradient(ellipse 69.811px 5.281px at 123.925px 129.719px, rgba(82, 82, 82, 0.1098) 0%, rgba(82, 82, 82, 0) 100%);
+}
+.hero-viz--opt3.hv-nrm .hv-card::after {
+  content: ""; inset: 0; width: auto; height: auto;
+  border-radius: 0; opacity: 1; filter: none;
+  background: radial-gradient(ellipse 38.829px 8.256px at 99.660px 126.744px, rgba(82, 82, 82, 0.1098) 0%, rgba(82, 82, 82, 0) 100%),
+              radial-gradient(ellipse 31.343px 8.546px at 153.160px 126.454px, rgba(82, 82, 82, 0.1098) 0%, rgba(82, 82, 82, 0) 100%);
+}

@@ -1,0 +1,63 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="12.8345" height="13.0047" viewBox="0 0 12.8345 13.0047" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!--
+  Thin ring for the in-box AI sparkle. The shared icon-magic.svg draws the big
+  star as a FILLED even-odd ring: an outer curve plus an inner hole, both filled.
+  A filled ring has no thickness to set, and widening the hole by scaling it
+  about the centre moves every point in proportion to its own radius, so the
+  band would come out thinner at the waist than at the tips. So this file keeps
+  the outer curve exactly as authored, drops the hole, and STROKES the outer
+  curve clipped to itself. That is an inside stroke: one uniform weight on an
+  unmoved silhouette.
+
+  The weight is solved against the animation frame's own rim, which renders at
+  2.0000 page px (token bd-u, 2.3592 used px at k = 0.8478). Round 9 asked the
+  star to MATCH that rim; round 16 asks for thinner still. "Also for the AI
+  generating, can we even make the start lines thinner than it is?" So the
+  target is HALF the rim, 1.0000 page px. Half keeps the star tied to the rim
+  rather than to a number of its own, so it still tracks the design if the rim
+  ever changes, and it is unambiguously thinner without vanishing.
+  The glyph is painted into a 28.0000 page px box from a 12.8345 x 13.0047
+  viewBox with preserveAspectRatio none, so it is scaled by kx = 2.181620 and
+  ky = 2.153068, mean 2.167344. An inside stroke shows half its width, hence
+  1.00 / 2.167344 = 0.4613943 user units visible and stroke width 0.9227885.
+  Anisotropy is the whole error budget: 1.0066 px across a vertical edge,
+  0.9934 across a horizontal one, a spread of 0.0132 px: half of round 9's,
+  because the error scales with the weight.
+
+  ROUND 17 outlines the small sparkle too: "the AI icon has one of the fills?
+  Lets change that to outline". It was the last solid shape in the glyph, so it
+  gets the same treatment and the SAME 0.9227885 - same file, same box, same
+  scale, so one number produces one visible weight across both shapes. It needs
+  its own clip (#inside2) because a clip is a shape, not a rule.
+  It is much the tighter of the two, so whether a hole survives at all was the
+  thing to check rather than assume: the sparkle spans 4.54105 user units, 9.906
+  x 9.777 page px, and its INRADIUS - centre to the valley between two arms,
+  where the outline comes closest to the middle - is 1.5589. A 0.4614 visible
+  band leaves 1.0975, so the hole reaches 2.38 page px from the centre, roughly
+  4.8 across. Confirmed on the render, not on that arithmetic alone. The
+  four arms do go solid near their tips, which is what outlining a shape this
+  size looks like and what the big star's own tips already do.
+
+  A COMMENT IN THIS FILE MAY NOT CONTAIN A DOUBLE HYPHEN.  Every other file in
+  this repo writes a dash as " - - " without the spaces, and importing that habit
+  here made the whole SVG unparseable: XML forbids "- -" inside a comment, so
+  Chrome dropped the mask and the glyph went blank - big star and all, not just
+  the shape being edited.  Nothing about the paths was wrong and every text-shape
+  check still passed, which is why the guard for this is a parse plus a render,
+  not a regex.  (Written with spaces above so this paragraph is legal too.)
+
+  Only the in-box sparkle uses this file, and it uses it as a MASK - mask-image
+  in builds.css, so only alpha is read and the #4A4A4A is inert. The toolbar icon
+  and the pressed magic key stay on the original, which is why this is a
+  separate asset.
+-->
+<g id="Icon">
+<defs><clipPath id="inside2"><path d="M1.73445 0.317826C1.96621 -0.105942 2.57484 -0.105942 2.80661 0.317826L2.99831 0.668346C3.20017 1.03743 3.50363 1.34088 3.87271 1.54274L4.22323 1.73445C4.64699 1.96621 4.64699 2.57484 4.22323 2.80661L3.87271 2.99831C3.50363 3.20017 3.20017 3.50363 2.99831 3.87271L2.80661 4.22323C2.57484 4.64699 1.96621 4.64699 1.73445 4.22323L1.54274 3.87271C1.34088 3.50363 1.03743 3.20017 0.668346 2.99831L0.317826 2.80661C-0.105942 2.57484 -0.105942 1.96621 0.317826 1.73445L0.668346 1.54274C1.03743 1.34088 1.34088 1.03743 1.54274 0.668346L1.73445 0.317826Z"/></clipPath><clipPath id="inside"><path d="M8.81888 3.87302C8.64277 2.73281 7.00817 2.71043 6.80092 3.8454L6.77173 4.00526C6.49294 5.53195 5.28439 6.71849 3.75283 6.96915C2.6292 7.15306 2.60596 8.7607 3.7238 8.977L3.82638 8.99685C5.32498 9.28684 6.49682 10.4587 6.78681 11.9573L6.81806 12.1188C7.04664 13.3 8.73711 13.3 8.96569 12.1188L8.99005 11.9929C9.28362 10.4758 10.4778 9.29406 11.998 9.01647C13.1557 8.80506 13.0922 7.13096 11.9284 6.95613C10.3343 6.71666 9.06494 5.46614 8.81888 3.87302Z"/></clipPath></defs>
+<g clip-path="url(#inside2)">
+<path d="M1.73445 0.317826C1.96621 -0.105942 2.57484 -0.105942 2.80661 0.317826L2.99831 0.668346C3.20017 1.03743 3.50363 1.34088 3.87271 1.54274L4.22323 1.73445C4.64699 1.96621 4.64699 2.57484 4.22323 2.80661L3.87271 2.99831C3.50363 3.20017 3.20017 3.50363 2.99831 3.87271L2.80661 4.22323C2.57484 4.64699 1.96621 4.64699 1.73445 4.22323L1.54274 3.87271C1.34088 3.50363 1.03743 3.20017 0.668346 2.99831L0.317826 2.80661C-0.105942 2.57484 -0.105942 1.96621 0.317826 1.73445L0.668346 1.54274C1.03743 1.34088 1.34088 1.03743 1.54274 0.668346L1.73445 0.317826Z" fill="none" stroke="#4A4A4A" stroke-width="0.9227885" stroke-linejoin="round"/>
+</g>
+<g clip-path="url(#inside)">
+<path d="M8.81888 3.87302C8.64277 2.73281 7.00817 2.71043 6.80092 3.8454L6.77173 4.00526C6.49294 5.53195 5.28439 6.71849 3.75283 6.96915C2.6292 7.15306 2.60596 8.7607 3.7238 8.977L3.82638 8.99685C5.32498 9.28684 6.49682 10.4587 6.78681 11.9573L6.81806 12.1188C7.04664 13.3 8.73711 13.3 8.96569 12.1188L8.99005 11.9929C9.28362 10.4758 10.4778 9.29406 11.998 9.01647C13.1557 8.80506 13.0922 7.13096 11.9284 6.95613C10.3343 6.71666 9.06494 5.46614 8.81888 3.87302Z" fill="none" stroke="#4A4A4A" stroke-width="0.9227885" stroke-linejoin="round"/>
+</g>
+</g>
+</svg>
